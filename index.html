@@ -150,6 +150,174 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN-YXH">
+    <link itemprop="mainEntityOfPage" href="https://yxhxianyu.github.io/2021/09/21/GAMES101%E5%A4%A7%E4%BD%9C%E4%B8%9A-%E4%BD%9C%E4%B8%9A%E6%8A%A5%E5%91%8A/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/suohM.png">
+      <meta itemprop="name" content="YXH_XianYu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="咸鱼鱼的Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/09/21/GAMES101%E5%A4%A7%E4%BD%9C%E4%B8%9A-%E4%BD%9C%E4%B8%9A%E6%8A%A5%E5%91%8A/" class="post-title-link" itemprop="url">GAMES101大作业-作业报告</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-09-21 02:09:01" itemprop="dateCreated datePublished" datetime="2021-09-21T02:09:01+08:00">2021-09-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-09-30 17:09:35" itemprop="dateModified" datetime="2021-09-30T17:09:35+08:00">2021-09-30</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine: </span>
+    
+    <a title="valine" href="/2021/09/21/GAMES101%E5%A4%A7%E4%BD%9C%E4%B8%9A-%E4%BD%9C%E4%B8%9A%E6%8A%A5%E5%91%8A/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/09/21/GAMES101%E5%A4%A7%E4%BD%9C%E4%B8%9A-%E4%BD%9C%E4%B8%9A%E6%8A%A5%E5%91%8A/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="GAMES101-FinalProject-YXH-XianYu"><a href="#GAMES101-FinalProject-YXH-XianYu" class="headerlink" title="GAMES101 - FinalProject - YXH_XianYu"></a>GAMES101 - FinalProject - YXH_XianYu</h3><h3 id="Simple-Rendering-Homogenous-Participating-Media"><a href="#Simple-Rendering-Homogenous-Participating-Media" class="headerlink" title="Simple Rendering Homogenous Participating Media"></a>Simple Rendering Homogenous Participating Media</h3><ul>
+<li><p>我完成了 <strong>2.2.1 体积散射</strong> 的 <strong>退化版</strong></p>
+<ul>
+<li><img src="/2021/09/21/GAMES101%E5%A4%A7%E4%BD%9C%E4%B8%9A-%E4%BD%9C%E4%B8%9A%E6%8A%A5%E5%91%8A/introduction.png" alt="introduction"></li>
+</ul>
+</li>
+<li><p>效果图<img src="/2021/09/21/GAMES101%E5%A4%A7%E4%BD%9C%E4%B8%9A-%E4%BD%9C%E4%B8%9A%E6%8A%A5%E5%91%8A/binary_PM_2048p_spp512_sigma0.7_16dir(%E5%8E%8B%E7%BC%A9%E8%87%B3392p).png" alt="binary_PM_2048p_spp512_sigma0.7_16dir"></p>
+<ul>
+<li>images文件夹下，存放各种不同参数的效果图（参数说明见文末）</li>
+</ul>
+</li>
+<li><p>演示视频</p>
+<ul>
+<li>链接：<a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1wn5O-miQk0MA6qA-xkaV2w">https://pan.baidu.com/s/1wn5O-miQk0MA6qA-xkaV2w</a><br>提取码：2333 </li>
+</ul>
+</li>
+<li><p>如何实现：</p>
+<ul>
+<li><p>我在作业7框架的基础上进行修改</p>
+</li>
+<li><p>参考了《Rendering Participating Media with Bidirectional Path Tracing》来实现效果</p>
+<ul>
+<li>跳过了论文的第4节，没有实现双向路径追踪</li>
+<li>由于数学水平的限制，没有完全按照论文中的公式来实现体积散射</li>
+</ul>
+</li>
+<li><p>均匀介质的体积散射（主要修改了 Scene.cpp 中的 castRay函数）</p>
+<ul>
+<li><p>若光线传播距离超过1000单位，则判断光线散射；</p>
+<p>若光线传播距离不超过1000单位，则按照普通路径追踪递归处理。</p>
+</li>
+<li><p>光线根据 scattering函数(相位函数?)，决定散射的方向</p>
+<ul>
+<li>scattering函数：在球面上随机一个方向，与光线传播方向取均值后，输出该向量。</li>
+</ul>
+</li>
+<li><p>获得光线散射出的方向后，递归处理新光线</p>
+</li>
+<li><p>递归公式 $L_{indir} = castRay(new_ray) * \Large\frac{\sigma}{\kappa}\normalsize * \frac{1}{RR} $</p>
+<ul>
+<li>$\Large\frac{\sigma}{\kappa}$: 散射的能量损失</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>非均匀介质的体积散射</p>
+<ul>
+<li>没成功实现</li>
+<li>思路一：利用一团团离散的、不同性质的介质团，来模拟非均匀介质<ul>
+<li>在 Scene.cpp 中，尝试实现了多种介质团，但无法模拟出尘土等介质</li>
+<li>废弃代码位于 Scene.cpp 末尾</li>
+</ul>
+</li>
+<li>思路二：利用噪声函数，来模拟非均匀介质<ul>
+<li>在 Perlin.hpp 中，实现了三维柏林噪声函数，但无法模拟出尘土等介质，或是类似《大作业选题参考》中效果图的那种体积散射效果。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>效果图分析</p>
+<ul>
+<li>参数说明：<ul>
+<li>*p：分辨率</li>
+<li>spp*：采样率</li>
+<li>sigma*：散射率/消光率。值过大，无散射效果；值过小，图像过暗。</li>
+<li>*dir：”scattering函数”中，光线方向所占的权值。值过大，无散射效果；值过小，雾气透明度过低（若dir=0，则散射时光线随机弹射）</li>
+</ul>
+</li>
+<li>效果图边缘的明显分界线，是因为散射距离过远，若散射距离为500，则整个场景都会被雾气覆盖</li>
+<li><img src="/2021/09/21/GAMES101%E5%A4%A7%E4%BD%9C%E4%B8%9A-%E4%BD%9C%E4%B8%9A%E6%8A%A5%E5%91%8A/binary_PM_256p_spp64_sigma0.5_0dir_TheFirstFog.png" alt="binary_PM_256p_spp64_sigma0.5_0dir_TheFirstFog"><ul>
+<li>256p, spp64, sigma0.5, 0dir</li>
+</ul>
+</li>
+<li><img src="/2021/09/21/GAMES101%E5%A4%A7%E4%BD%9C%E4%B8%9A-%E4%BD%9C%E4%B8%9A%E6%8A%A5%E5%91%8A/binary_PM_392p_spp256_sigma0.7_4dir.png" alt="binary_PM_392p_spp256_sigma0.7_4dir"><ul>
+<li>392p, spp256, sigma0.7, 4dir</li>
+</ul>
+</li>
+<li><img src="/2021/09/21/GAMES101%E5%A4%A7%E4%BD%9C%E4%B8%9A-%E4%BD%9C%E4%B8%9A%E6%8A%A5%E5%91%8A/binary_PM_392p_spp256_sigma0.7_16dir.png" alt="binary_PM_392p_spp256_sigma0.7_16dir"><ul>
+<li>392p, spp256, sigma0.7, 16dir</li>
+</ul>
+</li>
+<li><img src="/2021/09/21/GAMES101%E5%A4%A7%E4%BD%9C%E4%B8%9A-%E4%BD%9C%E4%B8%9A%E6%8A%A5%E5%91%8A/binary_PM_2048p_spp512_sigma0.7_16dir.png" alt="binary_PM_2048p_spp512_sigma0.7_16dir"><ul>
+<li>2048p, spp512, sigma0.7, 16dir</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN-YXH">
     <link itemprop="mainEntityOfPage" href="https://yxhxianyu.github.io/2021/04/13/%E3%80%8A%E5%90%B9%E5%93%8D%E5%90%A7%EF%BC%81%E4%B8%8A%E4%BD%8E%E9%9F%B3%E5%8F%B7%E3%80%8B%EF%BC%9A%E5%A7%8B%E4%BA%8E%E7%99%BE%E5%90%88%EF%BC%8C%E5%BF%A0%E4%BA%8E%E7%B2%BE%E7%A5%9E/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -393,14 +561,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-count">3</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-count">2</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
