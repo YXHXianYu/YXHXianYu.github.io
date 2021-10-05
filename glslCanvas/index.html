@@ -1,0 +1,253 @@
+<!-- 不会用glslCanvas -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>GlslCanvas</title>
+
+        <script type="text/javascript" src="dist/GlslCanvas.js"></script>
+        <script type="text/javascript" src="https://cdn.rawgit.com/github/fetch/master/fetch.js"></script>
+
+        <style>
+            body {
+                background: #101515;
+            }
+
+            #glslCanvas {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%,-50%);
+            }​
+
+            #credits {
+                position: absolute; 
+                bottom: 10px; 
+                right: 15px; 
+                text-align: right;
+                background: rgba(0,0,0,.5);
+                padding: 12px;
+                padding-top: 5px;
+                padding-bottom: 5px;
+                margin: 0px
+            }
+
+            .label {
+                color: white;
+                font-family: Helvetica, Arial, sans-serif;
+                text-decoration: none; 
+                line-height: 0.0;
+            }
+
+            #title {
+                font-size: 24px;
+                font-weight: 600;
+            }
+
+            #author {
+                font-size: 14px; 
+                font-style: italic;
+                font-weight: 100;
+            }
+        </style>
+
+    </head>
+    <body>
+        <canvas id="glslCanvas" data-fragment="
+        // Frame from the Book of Shaders
+
+        #ifdef GL_ES
+        precision mediump float;
+        #endif
+        
+        #define PI 3.1415926
+        
+        uniform vec2 u_resolution;
+        uniform vec2 u_mouse;
+        uniform float u_time;
+        
+        // 坐标为内正方形
+        // 正方形边0.0; 正方形内部0.5; 正方形外部1.0;
+        float drawRectangle_line(vec2 st, float width, float x1, float y1, float x2, float y2) {
+            if(step(x1 - width, st.x) == 0.0) return 1.0;
+            if(step(y1 - width, st.y) == 0.0) return 1.0;
+            if(step(x2 + width, st.x) == 1.0) return 1.0;
+            if(step(y2 + width, st.y) == 1.0) return 1.0;
+            if(step(x1, st.x) == 0.0) return 0.0;
+            if(step(y1, st.y) == 0.0) return 0.0;
+            if(step(x2, st.x) == 1.0) return 0.0;
+            if(step(y2, st.y) == 1.0) return 0.0;
+            return 0.5;
+        }
+        
+        vec3 drawRectangle_fill(vec2 st, float width, float x1, float y1, float x2, float y2, vec3 color) {
+            float a = drawRectangle_line(st, width, x1, y1, x2, y2);
+            if(a == 1.0) return vec3(1.0);
+            else if(a == 0.0) return vec3(0.0); 
+            else return color;
+        }
+        
+        vec3 distanceFieldDraw(vec2 st, int type, vec3 color, vec2 center) {
+            // add, times, min, max, pow
+            float v1 = distance(st,  vec2(sin(u_time)/2.0+center.x,cos(u_time)/2.0+center.y)),
+                  v2 = distance(st, vec2(sin(u_time+PI)/2.0+center.x,cos(u_time+PI)/2.0+center.y));
+            if(type == 1) return (v1 * v2) * color;
+            if(type == 2) return min(v1, v2) * color;
+            if(type == 3) return max(v1, v2) * color;
+            if(type == 4) return pow(v1, v2) * color;
+            return color;
+        }
+        
+        vec3 distanceFieldDraw_DEMO(vec2 st) {
+            vec3 color1 = distanceFieldDraw(st, 2, vec3(0.218,1.000,0.284), vec2(0.340,0.540)),
+                 color2 = distanceFieldDraw(st, 4, vec3(1.000,0.473,0.170), vec2(0.930,0.360));
+            return color1 + color2;
+        }
+        
+        // from tbos
+        vec3 hsb2rgb( in vec3 c ){
+            vec3 rgb = clamp(abs(mod(c.x*6.0+vec3(0.0,4.0,2.0),
+                                     6.0)-3.0)-1.0,
+                             0.0,
+                             1.0 );
+            rgb = rgb*rgb*(3.0-2.0*rgb);
+            return c.z * mix( vec3(1.0), rgb, c.y);
+        }
+        
+        void main(){
+            vec2 st = gl_FragCoord.xy/u_resolution.xy;
+            
+            vec3 color = distanceFieldDraw_DEMO(st);
+        
+            gl_FragColor = vec4(color,1.0);
+        }        
+" width="800" height="600" data-textures="data/moon.jpg"></canvas>
+
+        <div id="credits">
+            <p class="label" id="title"></p>
+            <p class="label" id="author"></p>
+        </div>
+    </body>
+
+    <script>
+        var canvas = document.getElementById("glslCanvas");
+        var sandbox = new GlslCanvas(canvas);
+        var texCounter = 0;
+        var sandbox_content = "";
+        var sandbox_title = "";
+        var sandbox_author = "";
+        var sandbox_thumbnail = ""; 
+        canvas.style.width = '100%';
+        canvas.style.height = '100%';
+
+        function parseQuery (qstr) {
+            var query = {};
+            var a = qstr.split('&');
+            for (var i in a) {
+                var b = a[i].split('=');
+                query[decodeURIComponent(b[0])] = decodeURIComponent(b[1]);
+            }
+            return query;
+        }
+
+        function load(url) {
+            // Make the request and wait for the reply
+            fetch(url)
+                .then(function (response) {
+                    // If we get a positive response...
+                    if (response.status !== 200) {
+                        console.log('Error getting shader. Status code: ' + response.status);
+                        return;
+                    }
+                    // console.log(response);
+                    return response.text();
+                })
+                .then(function(content) {
+                    sandbox_content = content;
+                    sandbox.load(content);
+
+                    var title = addTitle();
+                    var author = addAuthor();
+                    if ( title === "unknown" && author === "unknown") {
+                        document.getElementById("credits").style.visibility = "hidden";
+                    } else {
+                        document.getElementById("credits").style.visibility = "visible";
+                    }
+
+                    addMeta({
+                                'title' : title + ' by ' + author,
+                                'type' : 'website',
+                                'url': window.location.href,
+                                'image': sandbox_thumbnail
+                            })                 
+                })
+        }
+
+        function addTitle() {
+            var result = sandbox_content.match(/\/\/\s*[T|t]itle\s*:\s*([\w|\s|\@|\(|\)|\-|\_]*)/i);
+            if (result && !(result[1] === ' ' || result[1] === '')) {
+                sandbox_title = result[1].replace(/(\r\n|\n|\r)/gm, '');
+                var title_el = document.getElementById("title").innerHTML = sandbox_title;
+                return sandbox_title;
+            }
+            else {
+                return "unknown";
+            }
+        }
+
+        function addAuthor() {
+            var result = sandbox_content.match(/\/\/\s*[A|a]uthor\s*[\:]?\s*([\w|\s|\@|\(|\)|\-|\_]*)/i);
+            if (result && !(result[1] === ' ' || result[1] === '')) {
+                sandbox_author = result[1].replace(/(\r\n|\n|\r)/gm, '');
+                document.getElementById("author").innerHTML = sandbox_author;
+                return sandbox_author;
+            }
+            else {
+                return "unknown";
+            }
+        }
+
+        function addMeta(obj) {
+            for (var key in obj) {
+                var meta = document.createElement('meta');
+                meta.setAttribute('og:'+key, obj[key]);
+                document.getElementsByTagName('head')[0].appendChild(meta);
+            }              
+        }
+
+        var query = parseQuery(window.location.search.slice(1));
+        if (query && query.log) {
+            sandbox_thumbnail = 'https://thebookofshaders.com/log/' + query.log + '.png';
+            load('https://thebookofshaders.com/log/' + query.log + '.frag');
+        }
+
+        if (window.location.hash !== '') {
+            var hashes = location.hash.split('&');
+            for (var i in hashes) {
+                var ext = hashes[i].substr(hashes[i].lastIndexOf('.') + 1);
+                var path = hashes[i];
+
+                // Extract hash if is present
+                if (path.search('#') === 0) {
+                    path = path.substr(1);
+                }
+
+                if (ext === 'frag') {
+                    load(path);
+                }
+                else if (ext === 'png' || ext === 'jpg' || ext === 'PNG' || ext === 'JPG') {
+                    sandbox.setUniform("u_tex"+texCounter.toString(), path);
+                    texCounter++;
+                }
+            }
+        }
+    </script>
+    <script>
+        (function(i,s,o,g,r,a,m){i["GoogleAnalyticsObject"]=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,"script","//www.google-analytics.com/analytics.js","ga");
+        ga("create", "UA-18824436-2", "auto");
+        ga("send", "pageview");
+    </script>
+</html>
