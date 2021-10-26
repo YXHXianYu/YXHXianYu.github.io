@@ -31,7 +31,7 @@
 <meta property="og:image" content="https://yxhxianyu.github.io/2021/10/26/%E5%8A%A8%E6%80%81%E5%BC%80%E7%82%B9%E7%BA%BF%E6%AE%B5%E6%A0%91%E7%9A%84%E7%90%86%E8%AE%BA%E7%A9%BA%E9%97%B4%E4%B8%8A%E7%95%8C/2.png">
 <meta property="og:image" content="https://yxhxianyu.github.io/2021/10/26/%E5%8A%A8%E6%80%81%E5%BC%80%E7%82%B9%E7%BA%BF%E6%AE%B5%E6%A0%91%E7%9A%84%E7%90%86%E8%AE%BA%E7%A9%BA%E9%97%B4%E4%B8%8A%E7%95%8C/3.png">
 <meta property="article:published_time" content="2021-10-26T07:43:27.000Z">
-<meta property="article:modified_time" content="2021-10-26T10:38:02.786Z">
+<meta property="article:modified_time" content="2021-10-26T10:44:36.142Z">
 <meta property="article:author" content="YXH_XianYu">
 <meta property="article:tag" content="信息学&#x2F;ACM">
 <meta name="twitter:card" content="summary">
@@ -187,7 +187,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2021-10-26 15:43:27 / Modified: 18:38:02" itemprop="dateCreated datePublished" datetime="2021-10-26T15:43:27+08:00">2021-10-26</time>
+              <time title="Created: 2021-10-26 15:43:27 / Modified: 18:44:36" itemprop="dateCreated datePublished" datetime="2021-10-26T15:43:27+08:00">2021-10-26</time>
             </span>
 
           
@@ -266,8 +266,10 @@
 </ul>
 </li>
 </ul>
-<hr>
-<p>$$<br>设 函数 f(k) = (2^k-1)+n*(log_2^v-k), k \in [0, logv+1]，则\<br>f’(k)=2^k<em>ln_2-n，且显然，f’(k) 单调递增\<br>~\<br>设存在 f’(k_0)=0，得到\<br>k_0 = log_2^n - log2^{ln^2}\<br>~\<br>当 k \in [0, k_0) 时，f(k)递减\<br>当 k \in (k_0, logv+1) 时，f(k)递增\<br>得\<br>f(k)\geq f(k_0)=2^{log_2^n+log_2^{ln^2}}+n</em>(log_2^{\ \frac{v}{n}}+log_2^{ln^2})\<br>即\ 总开点次数\  sum \leq 2^{log_2^n+log_2^{ln^2}}+n*(log_2^{\ \frac{v}{n}}+log_2^{ln^2})<br>$$</p>
+<p>设 函数 $f(k) = (2^k-1)+n*(log_2^v-k), k \in [0, logv+1]$，则<br>$f’(k)=2^k*ln_2-n$，且显然，$f’(k)$ 单调递增</p>
+<p>设存在 $f’(k_0)=0$，得到<br>$k_0 = log_2^n - log2^{ln^2}$</p>
+<p>当 $k \in [0, k_0)$ 时，$f(k)$ 递减<br>当 $k \in (k_0, logv+1)$ 时，$f(k)$ 递增，得</p>
+<p>$ f(k)\geq f(k_0)=2^{log_2^n+log_2^{ln^2}}+n*(log_2^{\ \frac{v}{n}}+log_2^{ln^2})$<br>即 总开点次数 $sum \leq 2^{log_2^n+log_2^{ln^2}}+n*(log_2^{\ \frac{v}{n}}+log_2^{ln^2})$</p>
 <hr>
 <h3 id="检验"><a href="#检验" class="headerlink" title="检验"></a>检验</h3><p>以 <a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P1908">LuoguP1908</a> 为例。</p>
 <p>$ n \leq 5e5，v \leq 1e9$</p>
