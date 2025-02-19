@@ -640,8 +640,8 @@ body {
   border-radius: 5px;
   background-size: 50px 50px;
   background-repeat: no-repeat;
-  filter: grayscale(100%);
-  -webkit-filter: grayscale(100%);
+  filter: none;
+  -webkit-filter: none;
 }
 #header #nav {
   color: #cc2a41;
