@@ -6,15 +6,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
-    <meta name="description" content="1. 简介 本文探讨了函数形参的三种写法 方法一：const T&amp; —— 最常见 方法二：const T&amp; + T&amp;&amp; + move 方法三：T + move    2. 实验内容 编译器：gcc.exe (x86_64-win32-seh-rev1, Built by MinGW-Builds project) 13.1.0  编译命令：g++ main.cpp">
+    <meta name="description" content="1. 简介 本文探讨了函数形参的三种写法 方法一：const T&amp; —— 最常见 方法二：const T&amp; + T&amp;&amp; + move 方法三：T + move   换句话说 写代码的时候，经常会遇到，一个类的成员函数，需要从外部接收一个值，然后存到自己的成员变量里 然后关于这个问题，C++里怎么写，效率最高（结合move语义）    2. 实验内容 编译器：gcc.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="技术向 | C++函数形参怎么写效率最高? constT&amp; OR T&amp;&amp;">
 <meta property="og:url" content="http://yxhxianyu.fun/2025/03/07/%E5%BD%A2%E5%8F%82%E9%AB%98%E6%95%88%E5%86%99%E6%B3%95/index.html">
 <meta property="og:site_name" content="咸鱼鱼のBlog">
-<meta property="og:description" content="1. 简介 本文探讨了函数形参的三种写法 方法一：const T&amp; —— 最常见 方法二：const T&amp; + T&amp;&amp; + move 方法三：T + move    2. 实验内容 编译器：gcc.exe (x86_64-win32-seh-rev1, Built by MinGW-Builds project) 13.1.0  编译命令：g++ main.cpp">
+<meta property="og:description" content="1. 简介 本文探讨了函数形参的三种写法 方法一：const T&amp; —— 最常见 方法二：const T&amp; + T&amp;&amp; + move 方法三：T + move   换句话说 写代码的时候，经常会遇到，一个类的成员函数，需要从外部接收一个值，然后存到自己的成员变量里 然后关于这个问题，C++里怎么写，效率最高（结合move语义）    2. 实验内容 编译器：gcc.">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-03-06T16:08:27.000Z">
-<meta property="article:modified_time" content="2025-03-06T16:22:35.983Z">
+<meta property="article:modified_time" content="2025-03-06T16:34:58.892Z">
 <meta property="article:author" content="YXHXianYu">
 <meta property="article:tag" content="技术向">
 <meta property="article:tag" content="C++">
@@ -122,6 +122,11 @@
 &lt;li&gt;方法一：&lt;code&gt;const T&amp;amp;&lt;/code&gt; —— 最常见&lt;/li&gt;
 &lt;li&gt;方法二：&lt;code&gt;const T&amp;amp;&lt;/code&gt; + &lt;code&gt;T&amp;amp;&amp;amp; + move&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;方法三：&lt;code&gt;T + move&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;换句话说&lt;ul&gt;
+&lt;li&gt;写代码的时候，经常会遇到，一个类的成员函数，需要从外部接收一个值，然后存到自己的成员变量里&lt;/li&gt;
+&lt;li&gt;然后关于这个问题，C++里怎么写，效率最高（结合move语义）&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -241,6 +246,11 @@
 <li>方法三：<code>T + move</code></li>
 </ul>
 </li>
+<li>换句话说<ul>
+<li>写代码的时候，经常会遇到，一个类的成员函数，需要从外部接收一个值，然后存到自己的成员变量里</li>
+<li>然后关于这个问题，C++里怎么写，效率最高（结合move语义）</li>
+</ul>
+</li>
 </ul>
 <h2 id="2-实验内容"><a href="#2-实验内容" class="headerlink" title="2. 实验内容"></a>2. 实验内容</h2><ul>
 <li><p>编译器：<code>gcc.exe (x86_64-win32-seh-rev1, Built by MinGW-Builds project) 13.1.0</code></p>
@@ -347,6 +357,11 @@
 &lt;li&gt;方法一：&lt;code&gt;const T&amp;amp;&lt;/code&gt; —— 最常见&lt;/li&gt;
 &lt;li&gt;方法二：&lt;code&gt;const T&amp;amp;&lt;/code&gt; + &lt;code&gt;T&amp;amp;&amp;amp; + move&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;方法三：&lt;code&gt;T + move&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;换句话说&lt;ul&gt;
+&lt;li&gt;写代码的时候，经常会遇到，一个类的成员函数，需要从外部接收一个值，然后存到自己的成员变量里&lt;/li&gt;
+&lt;li&gt;然后关于这个问题，C++里怎么写，效率最高（结合move语义）&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
