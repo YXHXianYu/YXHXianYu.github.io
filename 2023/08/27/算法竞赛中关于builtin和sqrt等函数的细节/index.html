@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="1. 简介 本文实验了C++中一些内置函数的执行效率和精度的问题。 如果你也是算法竞赛选手的话，那么本文或许可以给你提供一些帮助。 CPU：i5-12400F 编译器：gcc.exe (x86_64-win32-seh-rev1, Built by MinGW-Builds project) 13.1.0 编译命令：g++ test.cpp 或 g++ test.cpp -O2 具体实验代码请见本">
+<meta property="og:type" content="article">
+<meta property="og:title" content="算法 | 算法竞赛中关于builtin和sqrt函数的细节">
+<meta property="og:url" content="http://yxhxianyu.fun/2023/08/27/%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E4%B8%AD%E5%85%B3%E4%BA%8Ebuiltin%E5%92%8Csqrt%E7%AD%89%E5%87%BD%E6%95%B0%E7%9A%84%E7%BB%86%E8%8A%82/index.html">
+<meta property="og:site_name" content="咸鱼鱼のBlog">
+<meta property="og:description" content="1. 简介 本文实验了C++中一些内置函数的执行效率和精度的问题。 如果你也是算法竞赛选手的话，那么本文或许可以给你提供一些帮助。 CPU：i5-12400F 编译器：gcc.exe (x86_64-win32-seh-rev1, Built by MinGW-Builds project) 13.1.0 编译命令：g++ test.cpp 或 g++ test.cpp -O2 具体实验代码请见本">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yxhxianyu.fun/2023/08/27/%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E4%B8%AD%E5%85%B3%E4%BA%8Ebuiltin%E5%92%8Csqrt%E7%AD%89%E5%87%BD%E6%95%B0%E7%9A%84%E7%BB%86%E8%8A%82/1.png">
+<meta property="article:published_time" content="2023-08-27T10:45:00.000Z">
+<meta property="article:modified_time" content="2025-10-03T02:47:41.359Z">
+<meta property="article:author" content="YXHXianYu">
+<meta property="article:tag" content="算法">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yxhxianyu.fun/2023/08/27/%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E4%B8%AD%E5%85%B3%E4%BA%8Ebuiltin%E5%92%8Csqrt%E7%AD%89%E5%87%BD%E6%95%B0%E7%9A%84%E7%BB%86%E8%8A%82/1.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon/web-app-manifest-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>算法 | 算法竞赛中关于builtin和sqrt函数的细节</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+  <!-- fancybox -->
+  
+    <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css"
+          />
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于我</a></li><!--
+     --><!--
+       --><li><a href="/archives/">所有文章</a></li><!--
+     --><!--
+       --><li><a href="/tags/">所有标签</a></li><!--
+     --><!--
+       --><li><a href="/friends/">友情链接</a></li><!--
+     --><!--
+       --><li><a href="/search/">站内搜索</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/2023/09/10/2023%E5%B9%B47-8%E6%9C%88%E6%B8%B8%E6%88%8F%E8%AE%B0%E5%BD%95/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/2023/07/02/2023%E5%B9%B46%E6%9C%88%E6%B8%B8%E6%88%8F%E8%AE%B0%E5%BD%95/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://yxhxianyu.fun/2023/08/27/%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E4%B8%AD%E5%85%B3%E4%BA%8Ebuiltin%E5%92%8Csqrt%E7%AD%89%E5%87%BD%E6%95%B0%E7%9A%84%E7%BB%86%E8%8A%82/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://yxhxianyu.fun/2023/08/27/%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E4%B8%AD%E5%85%B3%E4%BA%8Ebuiltin%E5%92%8Csqrt%E7%AD%89%E5%87%BD%E6%95%B0%E7%9A%84%E7%BB%86%E8%8A%82/&text=算法 | 算法竞赛中关于builtin和sqrt函数的细节"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://yxhxianyu.fun/2023/08/27/%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E4%B8%AD%E5%85%B3%E4%BA%8Ebuiltin%E5%92%8Csqrt%E7%AD%89%E5%87%BD%E6%95%B0%E7%9A%84%E7%BB%86%E8%8A%82/&title=算法 | 算法竞赛中关于builtin和sqrt函数的细节"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yxhxianyu.fun/2023/08/27/%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E4%B8%AD%E5%85%B3%E4%BA%8Ebuiltin%E5%92%8Csqrt%E7%AD%89%E5%87%BD%E6%95%B0%E7%9A%84%E7%BB%86%E8%8A%82/&is_video=false&description=算法 | 算法竞赛中关于builtin和sqrt函数的细节"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=算法 | 算法竞赛中关于builtin和sqrt函数的细节&body=Check out this article: http://yxhxianyu.fun/2023/08/27/%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E4%B8%AD%E5%85%B3%E4%BA%8Ebuiltin%E5%92%8Csqrt%E7%AD%89%E5%87%BD%E6%95%B0%E7%9A%84%E7%BB%86%E8%8A%82/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://yxhxianyu.fun/2023/08/27/%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E4%B8%AD%E5%85%B3%E4%BA%8Ebuiltin%E5%92%8Csqrt%E7%AD%89%E5%87%BD%E6%95%B0%E7%9A%84%E7%BB%86%E8%8A%82/&title=算法 | 算法竞赛中关于builtin和sqrt函数的细节"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://yxhxianyu.fun/2023/08/27/%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E4%B8%AD%E5%85%B3%E4%BA%8Ebuiltin%E5%92%8Csqrt%E7%AD%89%E5%87%BD%E6%95%B0%E7%9A%84%E7%BB%86%E8%8A%82/&title=算法 | 算法竞赛中关于builtin和sqrt函数的细节"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://yxhxianyu.fun/2023/08/27/%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E4%B8%AD%E5%85%B3%E4%BA%8Ebuiltin%E5%92%8Csqrt%E7%AD%89%E5%87%BD%E6%95%B0%E7%9A%84%E7%BB%86%E8%8A%82/&title=算法 | 算法竞赛中关于builtin和sqrt函数的细节"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://yxhxianyu.fun/2023/08/27/%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E4%B8%AD%E5%85%B3%E4%BA%8Ebuiltin%E5%92%8Csqrt%E7%AD%89%E5%87%BD%E6%95%B0%E7%9A%84%E7%BB%86%E8%8A%82/&title=算法 | 算法竞赛中关于builtin和sqrt函数的细节"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://yxhxianyu.fun/2023/08/27/%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E4%B8%AD%E5%85%B3%E4%BA%8Ebuiltin%E5%92%8Csqrt%E7%AD%89%E5%87%BD%E6%95%B0%E7%9A%84%E7%BB%86%E8%8A%82/&name=算法 | 算法竞赛中关于builtin和sqrt函数的细节&description=&lt;h2 id=&#34;1-简介&#34;&gt;&lt;a href=&#34;#1-简介&#34; class=&#34;headerlink&#34; title=&#34;1. 简介&#34;&gt;&lt;/a&gt;1. 简介&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;本文实验了C++中一些内置函数的执行效率和精度的问题。&lt;/li&gt;
+&lt;li&gt;如果你也是算法竞赛选手的话，那么本文或许可以给你提供一些帮助。&lt;/li&gt;
+&lt;li&gt;CPU：&lt;code&gt;i5-12400F&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;编译器：&lt;code&gt;gcc.exe (x86_64-win32-seh-rev1, Built by MinGW-Builds project) 13.1.0&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;编译命令：&lt;code&gt;g++ test.cpp&lt;/code&gt; 或 &lt;code&gt;g++ test.cpp -O2&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;具体实验代码请见本文末尾&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;2-GCC编译器中的builtin系列函数&#34;&gt;&lt;a href=&#34;#2-GCC编译器中的builtin系列函数&#34; class=&#34;headerlink&#34; title=&#34;2. GCC编译器中的builtin系列函数&#34;&gt;&lt;/a&gt;2. GCC编译器中的builtin系列函数&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;总所周知，GCC的builtin系列函数可以使用硬件进行加速，可以将暴力实现的 $O(log)$ 复杂度优化为 $O(1)$&lt;/li&gt;
+&lt;li&gt;但这些函数究竟有多快呢？&lt;/li&gt;
+&lt;li&gt;标准均为 &lt;code&gt;1e8&lt;/code&gt; 次运算，单位均为 &lt;code&gt;sec&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;builtin系列函数，参数默认为 &lt;strong&gt;无符号32位整数&lt;/strong&gt;&lt;br&gt;如果要使用 &lt;strong&gt;无符号64为整数&lt;/strong&gt;，请在末尾加上 &lt;code&gt;ll&lt;/code&gt;，如 &lt;code&gt;__builtin_popcountll()&lt;/code&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;2-1-builtin-popcount&#34;&gt;&lt;a href=&#34;#2-1-builtin-popcount&#34; class=&#34;headerlink&#34; title=&#34;2.1 __builtin_popcount&#34;&gt;&lt;/a&gt;2.1 __builtin_popcount&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;该函数用于求解一个无符号整数在二进制下的 $1$ 的个数&lt;/li&gt;
+&lt;li&gt;结论：能用popcount就要要用，效率差了10倍&lt;/li&gt;
+&lt;/ul&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;序号&lt;/th&gt;
+&lt;th&gt;方法&lt;/th&gt;
+&lt;th&gt;1&lt;/th&gt;
+&lt;th&gt;2&lt;/th&gt;
+&lt;th&gt;3&lt;/th&gt;
+&lt;th&gt;4&lt;/th&gt;
+&lt;th&gt;5&lt;/th&gt;
+&lt;th&gt;均值&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;&lt;tr&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;1e8次builtin popcount&lt;/td&gt;
+&lt;td&gt;0.146&lt;/td&gt;
+&lt;td&gt;0.153&lt;/td&gt;
+&lt;td&gt;0.157&lt;/td&gt;
+&lt;td&gt;0.147&lt;/td&gt;
+&lt;td&gt;0.164&lt;/td&gt;
+&lt;td&gt;0.153&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;1e8次builtin popcount（开O2)&lt;/td&gt;
+&lt;td&gt;0.144&lt;/td&gt;
+&lt;td&gt;0.142&lt;/td&gt;
+&lt;td&gt;0.144&lt;/td&gt;
+&lt;td&gt;0.154&lt;/td&gt;
+&lt;td&gt;0.144&lt;/td&gt;
+&lt;td&gt;0.145&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;3&lt;/td&gt;
+&lt;td&gt;1e8次O(log)的模拟&lt;/td&gt;
+&lt;td&gt;5.624&lt;/td&gt;
+&lt;td&gt;5.827&lt;/td&gt;
+&lt;td&gt;5.716&lt;/td&gt;
+&lt;td&gt;5.721&lt;/td&gt;
+&lt;td&gt;5.691&lt;/td&gt;
+&lt;td&gt;5.716&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;4&lt;/td&gt;
+&lt;td&gt;1e8次O(log)的模拟（开O2)&lt;/td&gt;
+&lt;td&gt;1.273&lt;/td&gt;
+&lt;td&gt;1.286&lt;/td&gt;
+&lt;td&gt;1.289&lt;/td&gt;
+&lt;td&gt;1.292&lt;/td&gt;
+&lt;td&gt;1.363&lt;/td&gt;
+&lt;td&gt;1.301&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;
+&lt;h3 id=&#34;2-2-builtin-clz&#34;&gt;&lt;a href=&#34;#2-2-builtin-clz&#34; class=&#34;headerlink&#34; title=&#34;2.2 __builtin_clz&#34;&gt;&lt;/a&gt;2.2 __builtin_clz&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;clz：count leading zeros&lt;/li&gt;
+&lt;li&gt;该函数用于求解一个无符号整数在二进制下的前导 $0$ 个数&lt;/li&gt;
+&lt;/ul&gt;"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://yxhxianyu.fun/2023/08/27/%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E4%B8%AD%E5%85%B3%E4%BA%8Ebuiltin%E5%92%8Csqrt%E7%AD%89%E5%87%BD%E6%95%B0%E7%9A%84%E7%BB%86%E8%8A%82/&t=算法 | 算法竞赛中关于builtin和sqrt函数的细节"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E7%AE%80%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text">1. 简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-GCC%E7%BC%96%E8%AF%91%E5%99%A8%E4%B8%AD%E7%9A%84builtin%E7%B3%BB%E5%88%97%E5%87%BD%E6%95%B0"><span class="toc-number">2.</span> <span class="toc-text">2. GCC编译器中的builtin系列函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-builtin-popcount"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 __builtin_popcount</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-builtin-clz"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 __builtin_clz</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-builtin-ctz"><span class="toc-number">2.3.</span> <span class="toc-text">2.3 __builtin_ctz</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-sqrt%E5%92%8Csqrtl%E7%9A%84%E7%B2%BE%E5%BA%A6%E9%97%AE%E9%A2%98"><span class="toc-number">3.</span> <span class="toc-text">3. sqrt和sqrtl的精度问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-sqrt%E5%92%8C%E4%BA%8C%E5%88%86%E7%9A%84%E6%89%A7%E8%A1%8C%E6%95%88%E7%8E%87%E9%97%AE%E9%A2%98"><span class="toc-number">4.</span> <span class="toc-text">4. sqrt和二分的执行效率问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-%E5%AE%9E%E9%AA%8C%E4%BB%A3%E7%A0%81"><span class="toc-number">5.</span> <span class="toc-text">9. 实验代码</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        算法 | 算法竞赛中关于builtin和sqrt函数的细节
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">YXHXianYu</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2023-08-27T10:45:00.000Z" class="dt-published" itemprop="datePublished">2023-08-27</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a>
+    </div>
+
+
+    </div>
+    
+  </header>
+  
+
+  
+  <div class="content e-content" itemprop="articleBody">
+    <h2 id="1-简介"><a href="#1-简介" class="headerlink" title="1. 简介"></a>1. 简介</h2><ul>
+<li>本文实验了C++中一些内置函数的执行效率和精度的问题。</li>
+<li>如果你也是算法竞赛选手的话，那么本文或许可以给你提供一些帮助。</li>
+<li>CPU：<code>i5-12400F</code></li>
+<li>编译器：<code>gcc.exe (x86_64-win32-seh-rev1, Built by MinGW-Builds project) 13.1.0</code></li>
+<li>编译命令：<code>g++ test.cpp</code> 或 <code>g++ test.cpp -O2</code></li>
+<li>具体实验代码请见本文末尾</li>
+</ul>
+<h2 id="2-GCC编译器中的builtin系列函数"><a href="#2-GCC编译器中的builtin系列函数" class="headerlink" title="2. GCC编译器中的builtin系列函数"></a>2. GCC编译器中的builtin系列函数</h2><ul>
+<li>总所周知，GCC的builtin系列函数可以使用硬件进行加速，可以将暴力实现的 $O(log)$ 复杂度优化为 $O(1)$</li>
+<li>但这些函数究竟有多快呢？</li>
+<li>标准均为 <code>1e8</code> 次运算，单位均为 <code>sec</code></li>
+</ul>
+<blockquote>
+<p>builtin系列函数，参数默认为 <strong>无符号32位整数</strong><br>如果要使用 <strong>无符号64为整数</strong>，请在末尾加上 <code>ll</code>，如 <code>__builtin_popcountll()</code></p>
+</blockquote>
+<h3 id="2-1-builtin-popcount"><a href="#2-1-builtin-popcount" class="headerlink" title="2.1 __builtin_popcount"></a>2.1 __builtin_popcount</h3><ul>
+<li>该函数用于求解一个无符号整数在二进制下的 $1$ 的个数</li>
+<li>结论：能用popcount就要要用，效率差了10倍</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>序号</th>
+<th>方法</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>均值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>1e8次builtin popcount</td>
+<td>0.146</td>
+<td>0.153</td>
+<td>0.157</td>
+<td>0.147</td>
+<td>0.164</td>
+<td>0.153</td>
+</tr>
+<tr>
+<td>2</td>
+<td>1e8次builtin popcount（开O2)</td>
+<td>0.144</td>
+<td>0.142</td>
+<td>0.144</td>
+<td>0.154</td>
+<td>0.144</td>
+<td>0.145</td>
+</tr>
+<tr>
+<td>3</td>
+<td>1e8次O(log)的模拟</td>
+<td>5.624</td>
+<td>5.827</td>
+<td>5.716</td>
+<td>5.721</td>
+<td>5.691</td>
+<td>5.716</td>
+</tr>
+<tr>
+<td>4</td>
+<td>1e8次O(log)的模拟（开O2)</td>
+<td>1.273</td>
+<td>1.286</td>
+<td>1.289</td>
+<td>1.292</td>
+<td>1.363</td>
+<td>1.301</td>
+</tr>
+</tbody></table>
+<h3 id="2-2-builtin-clz"><a href="#2-2-builtin-clz" class="headerlink" title="2.2 __builtin_clz"></a>2.2 __builtin_clz</h3><ul>
+<li>clz：count leading zeros</li>
+<li>该函数用于求解一个无符号整数在二进制下的前导 $0$ 个数</li>
+</ul>
+<h3 id="2-3-builtin-ctz"><a href="#2-3-builtin-ctz" class="headerlink" title="2.3 __builtin_ctz"></a>2.3 __builtin_ctz</h3><ul>
+<li>ctz：count trailing zeros</li>
+<li>该函数用于求解一个无符号整数在二进制下的结尾 $0$ 个数</li>
+<li>这里我们可以和经典的 <code>lowbit(x)</code> 来比较一下运行效率<ul>
+<li><code>#define lowbit(x) (x &amp; -x)</code></li>
+</ul>
+</li>
+<li>结论：开O2的lowbit为什么跑得这么快，太离谱了(○´･д･)ﾉ<ul>
+<li>1e10次lowbit竟然只要2.6sec……</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>序号</th>
+<th>方法</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>均值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>1e8次builtin ctz和左移</td>
+<td>0.171</td>
+<td>0.172</td>
+<td>0.170</td>
+<td>0.171</td>
+<td>0.176</td>
+<td>0.173</td>
+</tr>
+<tr>
+<td>2</td>
+<td>1e8次builtin ctz和左移（开O2)</td>
+<td>0.075</td>
+<td>0.072</td>
+<td>0.072</td>
+<td>0.075</td>
+<td>0.074</td>
+<td>0.074</td>
+</tr>
+<tr>
+<td>3</td>
+<td>1e8次lowbit</td>
+<td>0.169</td>
+<td>0.172</td>
+<td>0.174</td>
+<td>0.174</td>
+<td>0.177</td>
+<td>0.173</td>
+</tr>
+<tr>
+<td>4</td>
+<td>1e8次lowbit（开O2)</td>
+<td>0.025</td>
+<td>0.024</td>
+<td>0.025</td>
+<td>0.026</td>
+<td>0.025</td>
+<td>0.025</td>
+</tr>
+</tbody></table>
+<h2 id="3-sqrt和sqrtl的精度问题"><a href="#3-sqrt和sqrtl的精度问题" class="headerlink" title="3. sqrt和sqrtl的精度问题"></a>3. sqrt和sqrtl的精度问题</h2><ul>
+<li>lovekdl老师说，sqrt精度很烂，写了必挂，所以我们队在对精度有要求的时候，就都用二分手动开根。</li>
+<li>但这真的有必要吗？所以我来探究一下吧～(∠・ω&lt; )⌒★！</li>
+<li>注：输入及运算均为long double类型</li>
+<li>注：众所周知，long double能表示的精度最多只到 1e-17，所以这里只输出16位</li>
+<li>结论：sqrtl没有任何精度损失！不需要自己写二分！<ul>
+<li>@lovekdl</li>
+</ul>
+</li>
+<li>数据如下。<code>myS</code> 是我自己实现的二分开根，后面的数字为二分次数<ul>
+<li>
+        <a data-fancybox="gallery" href="/2023/08/27/%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E4%B8%AD%E5%85%B3%E4%BA%8Ebuiltin%E5%92%8Csqrt%E7%AD%89%E5%87%BD%E6%95%B0%E7%9A%84%E7%BB%86%E8%8A%82/1.png">
+          <img src="/2023/08/27/%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E4%B8%AD%E5%85%B3%E4%BA%8Ebuiltin%E5%92%8Csqrt%E7%AD%89%E5%87%BD%E6%95%B0%E7%9A%84%E7%BB%86%E8%8A%82/1.png" />
+        </a>
+        </li>
+</ul>
+</li>
+<li>当然，这里为什么当输入数据为 100000 时，二分30次的效果反而差呢？<ul>
+<li>这里和我二分的实现方法有关，详见末尾。</li>
+</ul>
+</li>
+</ul>
+<h2 id="4-sqrt和二分的执行效率问题"><a href="#4-sqrt和二分的执行效率问题" class="headerlink" title="4. sqrt和二分的执行效率问题"></a>4. sqrt和二分的执行效率问题</h2><ul>
+<li>那么，执行速度呢？</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>序号</th>
+<th>方法</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>均值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>1e7次sqrtl</td>
+<td>0.117</td>
+<td>0.115</td>
+<td>0.126</td>
+<td>0.117</td>
+<td>0.115</td>
+<td>0.118</td>
+</tr>
+<tr>
+<td>3</td>
+<td>1e7次二分，每次二分50次</td>
+<td>2.664</td>
+<td>2.633</td>
+<td>2.571</td>
+<td>2.563</td>
+<td>2.666</td>
+<td>2.619</td>
+</tr>
+</tbody></table>
+<h2 id="9-实验代码"><a href="#9-实验代码" class="headerlink" title="9. 实验代码"></a>9. 实验代码</h2><ul>
+<li>2.1 __builtin_popcount</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> int long long</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">work</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">auto</span> fm = <span class="built_in">clock</span>();</span><br><span class="line"></span><br><span class="line">	<span class="type">int</span> lim = <span class="number">1e8</span>;</span><br><span class="line">	<span class="type">int</span> cnt = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= lim; i++) &#123;</span><br><span class="line">        <span class="comment">// 1st case</span></span><br><span class="line">		<span class="type">int</span> x = i;</span><br><span class="line">		<span class="keyword">while</span>(x) &#123;</span><br><span class="line">			<span class="keyword">if</span>(x &amp; <span class="number">1</span>) cnt++;</span><br><span class="line">			x &gt;&gt;= <span class="number">1</span>;</span><br><span class="line">		&#125;</span><br><span class="line">        <span class="comment">// 2nd case</span></span><br><span class="line">		<span class="comment">// cnt += __builtin_popcount(i);</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">auto</span> ed = <span class="built_in">clock</span>();</span><br><span class="line"></span><br><span class="line">	cout &lt;&lt; fixed &lt;&lt; <span class="built_in">setprecision</span>(<span class="number">3</span>);</span><br><span class="line">	cout &lt;&lt; cnt &lt;&lt; <span class="string">&quot; | &quot;</span>;</span><br><span class="line">	cout &lt;&lt; <span class="number">1.0</span> * (ed - fm) / CLOCKS_PER_SEC &lt;&lt; <span class="string">&quot; sec&quot;</span> &lt;&lt; endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>2.3 __builtin_ctz &amp; lowbit</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> int long long</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> lowbit(x) (x&amp;-x)</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">work</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">auto</span> fm = <span class="built_in">clock</span>();</span><br><span class="line"></span><br><span class="line">	<span class="type">int</span> lim = <span class="number">1e10</span>;</span><br><span class="line">	<span class="type">int</span> cnt = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= lim; i++) &#123;</span><br><span class="line">		<span class="comment">// 1st case</span></span><br><span class="line">		cnt += <span class="built_in">lowbit</span>(i);</span><br><span class="line">		<span class="comment">// 2nd case</span></span><br><span class="line">		<span class="comment">// cnt += 1 &lt;&lt; __builtin_ctz(i);</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">auto</span> ed = <span class="built_in">clock</span>();</span><br><span class="line"></span><br><span class="line">	cout &lt;&lt; fixed &lt;&lt; <span class="built_in">setprecision</span>(<span class="number">3</span>);</span><br><span class="line">	cout &lt;&lt; cnt &lt;&lt; <span class="string">&quot; | &quot;</span>;</span><br><span class="line">	cout &lt;&lt; <span class="number">1.0</span> * (ed - fm) / CLOCKS_PER_SEC &lt;&lt; <span class="string">&quot; sec&quot;</span> &lt;&lt; endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>3 sqrt和二分的精度问题</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="type">long</span> <span class="type">double</span> db;</span><br><span class="line"></span><br><span class="line"><span class="function">db <span class="title">mySqrt</span><span class="params">(db x, <span class="type">int</span> t)</span> </span>&#123;</span><br><span class="line">	db l = <span class="number">0</span>;</span><br><span class="line">	db r = x;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= t; i++) &#123;</span><br><span class="line">		db md = (l + r) / <span class="number">2.0L</span>;</span><br><span class="line">		<span class="keyword">if</span>(md * md &lt;= x) l = md;</span><br><span class="line">		<span class="keyword">else</span> r = md;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> l;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">work</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	db x;</span><br><span class="line">	cin &gt;&gt; x;</span><br><span class="line"></span><br><span class="line">	cout &lt;&lt; fixed &lt;&lt; <span class="built_in">setprecision</span>(<span class="number">16</span>);</span><br><span class="line"></span><br><span class="line">	cout &lt;&lt; <span class="string">&quot;sqrt   : &quot;</span> &lt;&lt; <span class="built_in">sqrt</span>(((<span class="type">double</span>)(x))) &lt;&lt; endl;</span><br><span class="line">	cout &lt;&lt; <span class="string">&quot;sqrtl  : &quot;</span> &lt;&lt; <span class="built_in">sqrtl</span>(x) &lt;&lt; endl;</span><br><span class="line">	cout &lt;&lt; <span class="string">&quot;myS 100: &quot;</span> &lt;&lt; <span class="built_in">mySqrt</span>(x, <span class="number">100</span>) &lt;&lt; endl;</span><br><span class="line">	cout &lt;&lt; <span class="string">&quot;myS 80 : &quot;</span> &lt;&lt; <span class="built_in">mySqrt</span>(x, <span class="number">80</span>) &lt;&lt; endl;</span><br><span class="line">	cout &lt;&lt; <span class="string">&quot;myS 60 : &quot;</span> &lt;&lt; <span class="built_in">mySqrt</span>(x, <span class="number">60</span>) &lt;&lt; endl;</span><br><span class="line">	cout &lt;&lt; <span class="string">&quot;myS 40 : &quot;</span> &lt;&lt; <span class="built_in">mySqrt</span>(x, <span class="number">40</span>) &lt;&lt; endl;</span><br><span class="line">	cout &lt;&lt; <span class="string">&quot;myS 30 : &quot;</span> &lt;&lt; <span class="built_in">mySqrt</span>(x, <span class="number">30</span>) &lt;&lt; endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>4 sqrt和二分的执行效率</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> int long long</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="type">long</span> <span class="type">double</span> db;</span><br><span class="line"></span><br><span class="line"><span class="function">db <span class="title">mySqrt</span><span class="params">(db x, <span class="type">int</span> t)</span> </span>&#123;</span><br><span class="line">	db l = <span class="number">0</span>;</span><br><span class="line">	db r = x;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= t; i++) &#123;</span><br><span class="line">		db md = (l + r) / <span class="number">2.0L</span>;</span><br><span class="line">		<span class="keyword">if</span>(md * md &lt;= x) l = md;</span><br><span class="line">		<span class="keyword">else</span> r = md;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> l;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">work</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">auto</span> fm = <span class="built_in">clock</span>();</span><br><span class="line"></span><br><span class="line">	<span class="type">int</span> lim = <span class="number">1e7</span>;</span><br><span class="line">	<span class="type">int</span> cnt = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= lim; i++) &#123;</span><br><span class="line">		<span class="comment">// 1st case</span></span><br><span class="line">		cnt += <span class="built_in">sqrtl</span>(i);</span><br><span class="line">		<span class="comment">// 2nd case</span></span><br><span class="line">		<span class="comment">// cnt += mySqrt(i, 30);</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">auto</span> ed = <span class="built_in">clock</span>();</span><br><span class="line"></span><br><span class="line">	cout &lt;&lt; fixed &lt;&lt; <span class="built_in">setprecision</span>(<span class="number">3</span>);</span><br><span class="line">	cout &lt;&lt; cnt &lt;&lt; <span class="string">&quot; | &quot;</span>;</span><br><span class="line">	cout &lt;&lt; <span class="number">1.0</span> * (ed - fm) / CLOCKS_PER_SEC &lt;&lt; <span class="string">&quot; sec&quot;</span> &lt;&lt; endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">首页</a></li>
+        
+          <li><a href="/about/">关于我</a></li>
+        
+          <li><a href="/archives/">所有文章</a></li>
+        
+          <li><a href="/tags/">所有标签</a></li>
+        
+          <li><a href="/friends/">友情链接</a></li>
+        
+          <li><a href="/search/">站内搜索</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E7%AE%80%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text">1. 简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-GCC%E7%BC%96%E8%AF%91%E5%99%A8%E4%B8%AD%E7%9A%84builtin%E7%B3%BB%E5%88%97%E5%87%BD%E6%95%B0"><span class="toc-number">2.</span> <span class="toc-text">2. GCC编译器中的builtin系列函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-builtin-popcount"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 __builtin_popcount</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-builtin-clz"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 __builtin_clz</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-builtin-ctz"><span class="toc-number">2.3.</span> <span class="toc-text">2.3 __builtin_ctz</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-sqrt%E5%92%8Csqrtl%E7%9A%84%E7%B2%BE%E5%BA%A6%E9%97%AE%E9%A2%98"><span class="toc-number">3.</span> <span class="toc-text">3. sqrt和sqrtl的精度问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-sqrt%E5%92%8C%E4%BA%8C%E5%88%86%E7%9A%84%E6%89%A7%E8%A1%8C%E6%95%88%E7%8E%87%E9%97%AE%E9%A2%98"><span class="toc-number">4.</span> <span class="toc-text">4. sqrt和二分的执行效率问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-%E5%AE%9E%E9%AA%8C%E4%BB%A3%E7%A0%81"><span class="toc-number">5.</span> <span class="toc-text">9. 实验代码</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://yxhxianyu.fun/2023/08/27/%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E4%B8%AD%E5%85%B3%E4%BA%8Ebuiltin%E5%92%8Csqrt%E7%AD%89%E5%87%BD%E6%95%B0%E7%9A%84%E7%BB%86%E8%8A%82/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://yxhxianyu.fun/2023/08/27/%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E4%B8%AD%E5%85%B3%E4%BA%8Ebuiltin%E5%92%8Csqrt%E7%AD%89%E5%87%BD%E6%95%B0%E7%9A%84%E7%BB%86%E8%8A%82/&text=算法 | 算法竞赛中关于builtin和sqrt函数的细节"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://yxhxianyu.fun/2023/08/27/%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E4%B8%AD%E5%85%B3%E4%BA%8Ebuiltin%E5%92%8Csqrt%E7%AD%89%E5%87%BD%E6%95%B0%E7%9A%84%E7%BB%86%E8%8A%82/&title=算法 | 算法竞赛中关于builtin和sqrt函数的细节"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yxhxianyu.fun/2023/08/27/%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E4%B8%AD%E5%85%B3%E4%BA%8Ebuiltin%E5%92%8Csqrt%E7%AD%89%E5%87%BD%E6%95%B0%E7%9A%84%E7%BB%86%E8%8A%82/&is_video=false&description=算法 | 算法竞赛中关于builtin和sqrt函数的细节"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=算法 | 算法竞赛中关于builtin和sqrt函数的细节&body=Check out this article: http://yxhxianyu.fun/2023/08/27/%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E4%B8%AD%E5%85%B3%E4%BA%8Ebuiltin%E5%92%8Csqrt%E7%AD%89%E5%87%BD%E6%95%B0%E7%9A%84%E7%BB%86%E8%8A%82/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://yxhxianyu.fun/2023/08/27/%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E4%B8%AD%E5%85%B3%E4%BA%8Ebuiltin%E5%92%8Csqrt%E7%AD%89%E5%87%BD%E6%95%B0%E7%9A%84%E7%BB%86%E8%8A%82/&title=算法 | 算法竞赛中关于builtin和sqrt函数的细节"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://yxhxianyu.fun/2023/08/27/%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E4%B8%AD%E5%85%B3%E4%BA%8Ebuiltin%E5%92%8Csqrt%E7%AD%89%E5%87%BD%E6%95%B0%E7%9A%84%E7%BB%86%E8%8A%82/&title=算法 | 算法竞赛中关于builtin和sqrt函数的细节"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://yxhxianyu.fun/2023/08/27/%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E4%B8%AD%E5%85%B3%E4%BA%8Ebuiltin%E5%92%8Csqrt%E7%AD%89%E5%87%BD%E6%95%B0%E7%9A%84%E7%BB%86%E8%8A%82/&title=算法 | 算法竞赛中关于builtin和sqrt函数的细节"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://yxhxianyu.fun/2023/08/27/%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E4%B8%AD%E5%85%B3%E4%BA%8Ebuiltin%E5%92%8Csqrt%E7%AD%89%E5%87%BD%E6%95%B0%E7%9A%84%E7%BB%86%E8%8A%82/&title=算法 | 算法竞赛中关于builtin和sqrt函数的细节"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://yxhxianyu.fun/2023/08/27/%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E4%B8%AD%E5%85%B3%E4%BA%8Ebuiltin%E5%92%8Csqrt%E7%AD%89%E5%87%BD%E6%95%B0%E7%9A%84%E7%BB%86%E8%8A%82/&name=算法 | 算法竞赛中关于builtin和sqrt函数的细节&description=&lt;h2 id=&#34;1-简介&#34;&gt;&lt;a href=&#34;#1-简介&#34; class=&#34;headerlink&#34; title=&#34;1. 简介&#34;&gt;&lt;/a&gt;1. 简介&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;本文实验了C++中一些内置函数的执行效率和精度的问题。&lt;/li&gt;
+&lt;li&gt;如果你也是算法竞赛选手的话，那么本文或许可以给你提供一些帮助。&lt;/li&gt;
+&lt;li&gt;CPU：&lt;code&gt;i5-12400F&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;编译器：&lt;code&gt;gcc.exe (x86_64-win32-seh-rev1, Built by MinGW-Builds project) 13.1.0&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;编译命令：&lt;code&gt;g++ test.cpp&lt;/code&gt; 或 &lt;code&gt;g++ test.cpp -O2&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;具体实验代码请见本文末尾&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;2-GCC编译器中的builtin系列函数&#34;&gt;&lt;a href=&#34;#2-GCC编译器中的builtin系列函数&#34; class=&#34;headerlink&#34; title=&#34;2. GCC编译器中的builtin系列函数&#34;&gt;&lt;/a&gt;2. GCC编译器中的builtin系列函数&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;总所周知，GCC的builtin系列函数可以使用硬件进行加速，可以将暴力实现的 $O(log)$ 复杂度优化为 $O(1)$&lt;/li&gt;
+&lt;li&gt;但这些函数究竟有多快呢？&lt;/li&gt;
+&lt;li&gt;标准均为 &lt;code&gt;1e8&lt;/code&gt; 次运算，单位均为 &lt;code&gt;sec&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;builtin系列函数，参数默认为 &lt;strong&gt;无符号32位整数&lt;/strong&gt;&lt;br&gt;如果要使用 &lt;strong&gt;无符号64为整数&lt;/strong&gt;，请在末尾加上 &lt;code&gt;ll&lt;/code&gt;，如 &lt;code&gt;__builtin_popcountll()&lt;/code&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;2-1-builtin-popcount&#34;&gt;&lt;a href=&#34;#2-1-builtin-popcount&#34; class=&#34;headerlink&#34; title=&#34;2.1 __builtin_popcount&#34;&gt;&lt;/a&gt;2.1 __builtin_popcount&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;该函数用于求解一个无符号整数在二进制下的 $1$ 的个数&lt;/li&gt;
+&lt;li&gt;结论：能用popcount就要要用，效率差了10倍&lt;/li&gt;
+&lt;/ul&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;序号&lt;/th&gt;
+&lt;th&gt;方法&lt;/th&gt;
+&lt;th&gt;1&lt;/th&gt;
+&lt;th&gt;2&lt;/th&gt;
+&lt;th&gt;3&lt;/th&gt;
+&lt;th&gt;4&lt;/th&gt;
+&lt;th&gt;5&lt;/th&gt;
+&lt;th&gt;均值&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;&lt;tr&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;1e8次builtin popcount&lt;/td&gt;
+&lt;td&gt;0.146&lt;/td&gt;
+&lt;td&gt;0.153&lt;/td&gt;
+&lt;td&gt;0.157&lt;/td&gt;
+&lt;td&gt;0.147&lt;/td&gt;
+&lt;td&gt;0.164&lt;/td&gt;
+&lt;td&gt;0.153&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;1e8次builtin popcount（开O2)&lt;/td&gt;
+&lt;td&gt;0.144&lt;/td&gt;
+&lt;td&gt;0.142&lt;/td&gt;
+&lt;td&gt;0.144&lt;/td&gt;
+&lt;td&gt;0.154&lt;/td&gt;
+&lt;td&gt;0.144&lt;/td&gt;
+&lt;td&gt;0.145&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;3&lt;/td&gt;
+&lt;td&gt;1e8次O(log)的模拟&lt;/td&gt;
+&lt;td&gt;5.624&lt;/td&gt;
+&lt;td&gt;5.827&lt;/td&gt;
+&lt;td&gt;5.716&lt;/td&gt;
+&lt;td&gt;5.721&lt;/td&gt;
+&lt;td&gt;5.691&lt;/td&gt;
+&lt;td&gt;5.716&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;4&lt;/td&gt;
+&lt;td&gt;1e8次O(log)的模拟（开O2)&lt;/td&gt;
+&lt;td&gt;1.273&lt;/td&gt;
+&lt;td&gt;1.286&lt;/td&gt;
+&lt;td&gt;1.289&lt;/td&gt;
+&lt;td&gt;1.292&lt;/td&gt;
+&lt;td&gt;1.363&lt;/td&gt;
+&lt;td&gt;1.301&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;
+&lt;h3 id=&#34;2-2-builtin-clz&#34;&gt;&lt;a href=&#34;#2-2-builtin-clz&#34; class=&#34;headerlink&#34; title=&#34;2.2 __builtin_clz&#34;&gt;&lt;/a&gt;2.2 __builtin_clz&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;clz：count leading zeros&lt;/li&gt;
+&lt;li&gt;该函数用于求解一个无符号整数在二进制下的前导 $0$ 个数&lt;/li&gt;
+&lt;/ul&gt;"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://yxhxianyu.fun/2023/08/27/%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E4%B8%AD%E5%85%B3%E4%BA%8Ebuiltin%E5%92%8Csqrt%E7%AD%89%E5%87%BD%E6%95%B0%E7%9A%84%E7%BB%86%E8%8A%82/&t=算法 | 算法竞赛中关于builtin和sqrt函数的细节"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2021-2025
+    YXHXianYu
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于我</a></li><!--
+     --><!--
+       --><li><a href="/archives/">所有文章</a></li><!--
+     --><!--
+       --><li><a href="/tags/">所有标签</a></li><!--
+     --><!--
+       --><li><a href="/friends/">友情链接</a></li><!--
+     --><!--
+       --><li><a href="/search/">站内搜索</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+  <!-- fancybox -->
+  
+    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
+    <script>
+      Fancybox.bind('[data-fancybox="gallery"]', {
+        //
+      });    
+    </script>
+  
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

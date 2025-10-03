@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="关于 “许多博客中，给出的动态开点线段树  空间复杂度不够精确“ 的问题。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="算法 | 动态开点线段树的理论空间上界">
+<meta property="og:url" content="http://yxhxianyu.fun/2021/10/26/%E5%8A%A8%E6%80%81%E5%BC%80%E7%82%B9%E7%BA%BF%E6%AE%B5%E6%A0%91%E7%9A%84%E7%90%86%E8%AE%BA%E7%A9%BA%E9%97%B4%E4%B8%8A%E7%95%8C/index.html">
+<meta property="og:site_name" content="咸鱼鱼のBlog">
+<meta property="og:description" content="关于 “许多博客中，给出的动态开点线段树  空间复杂度不够精确“ 的问题。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yxhxianyu.fun/2021/10/26/%E5%8A%A8%E6%80%81%E5%BC%80%E7%82%B9%E7%BA%BF%E6%AE%B5%E6%A0%91%E7%9A%84%E7%90%86%E8%AE%BA%E7%A9%BA%E9%97%B4%E4%B8%8A%E7%95%8C/1.png">
+<meta property="og:image" content="http://yxhxianyu.fun/2021/10/26/%E5%8A%A8%E6%80%81%E5%BC%80%E7%82%B9%E7%BA%BF%E6%AE%B5%E6%A0%91%E7%9A%84%E7%90%86%E8%AE%BA%E7%A9%BA%E9%97%B4%E4%B8%8A%E7%95%8C/2.png">
+<meta property="og:image" content="http://yxhxianyu.fun/2021/10/26/%E5%8A%A8%E6%80%81%E5%BC%80%E7%82%B9%E7%BA%BF%E6%AE%B5%E6%A0%91%E7%9A%84%E7%90%86%E8%AE%BA%E7%A9%BA%E9%97%B4%E4%B8%8A%E7%95%8C/3.png">
+<meta property="article:published_time" content="2021-10-26T07:43:27.000Z">
+<meta property="article:modified_time" content="2025-10-03T02:47:41.311Z">
+<meta property="article:author" content="YXHXianYu">
+<meta property="article:tag" content="算法">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yxhxianyu.fun/2021/10/26/%E5%8A%A8%E6%80%81%E5%BC%80%E7%82%B9%E7%BA%BF%E6%AE%B5%E6%A0%91%E7%9A%84%E7%90%86%E8%AE%BA%E7%A9%BA%E9%97%B4%E4%B8%8A%E7%95%8C/1.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon/web-app-manifest-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>算法 | 动态开点线段树的理论空间上界</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+  <!-- fancybox -->
+  
+    <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css"
+          />
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于我</a></li><!--
+     --><!--
+       --><li><a href="/archives/">所有文章</a></li><!--
+     --><!--
+       --><li><a href="/tags/">所有标签</a></li><!--
+     --><!--
+       --><li><a href="/friends/">友情链接</a></li><!--
+     --><!--
+       --><li><a href="/search/">站内搜索</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/2022/03/19/%E3%80%8A%E8%89%BE%E5%B0%94%E7%99%BB%E6%B3%95%E7%8E%AF%E3%80%8B%EF%BC%9A%E9%AD%82%E7%B3%BB%E5%88%97%E7%9A%84%E9%9B%86%E5%A4%A7%E6%88%90%E4%B9%8B%E4%BD%9C/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/2021/10/23/YXH%E5%92%B8%E9%B1%BC%E6%95%99%E4%BD%A0%E5%81%9A%E6%A2%A6-%E5%86%8D%E5%90%AF%E8%88%AAI-MC%E6%95%85%E4%BA%8B%E4%B8%80%E5%88%99/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://yxhxianyu.fun/2021/10/26/%E5%8A%A8%E6%80%81%E5%BC%80%E7%82%B9%E7%BA%BF%E6%AE%B5%E6%A0%91%E7%9A%84%E7%90%86%E8%AE%BA%E7%A9%BA%E9%97%B4%E4%B8%8A%E7%95%8C/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://yxhxianyu.fun/2021/10/26/%E5%8A%A8%E6%80%81%E5%BC%80%E7%82%B9%E7%BA%BF%E6%AE%B5%E6%A0%91%E7%9A%84%E7%90%86%E8%AE%BA%E7%A9%BA%E9%97%B4%E4%B8%8A%E7%95%8C/&text=算法 | 动态开点线段树的理论空间上界"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://yxhxianyu.fun/2021/10/26/%E5%8A%A8%E6%80%81%E5%BC%80%E7%82%B9%E7%BA%BF%E6%AE%B5%E6%A0%91%E7%9A%84%E7%90%86%E8%AE%BA%E7%A9%BA%E9%97%B4%E4%B8%8A%E7%95%8C/&title=算法 | 动态开点线段树的理论空间上界"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yxhxianyu.fun/2021/10/26/%E5%8A%A8%E6%80%81%E5%BC%80%E7%82%B9%E7%BA%BF%E6%AE%B5%E6%A0%91%E7%9A%84%E7%90%86%E8%AE%BA%E7%A9%BA%E9%97%B4%E4%B8%8A%E7%95%8C/&is_video=false&description=算法 | 动态开点线段树的理论空间上界"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=算法 | 动态开点线段树的理论空间上界&body=Check out this article: http://yxhxianyu.fun/2021/10/26/%E5%8A%A8%E6%80%81%E5%BC%80%E7%82%B9%E7%BA%BF%E6%AE%B5%E6%A0%91%E7%9A%84%E7%90%86%E8%AE%BA%E7%A9%BA%E9%97%B4%E4%B8%8A%E7%95%8C/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://yxhxianyu.fun/2021/10/26/%E5%8A%A8%E6%80%81%E5%BC%80%E7%82%B9%E7%BA%BF%E6%AE%B5%E6%A0%91%E7%9A%84%E7%90%86%E8%AE%BA%E7%A9%BA%E9%97%B4%E4%B8%8A%E7%95%8C/&title=算法 | 动态开点线段树的理论空间上界"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://yxhxianyu.fun/2021/10/26/%E5%8A%A8%E6%80%81%E5%BC%80%E7%82%B9%E7%BA%BF%E6%AE%B5%E6%A0%91%E7%9A%84%E7%90%86%E8%AE%BA%E7%A9%BA%E9%97%B4%E4%B8%8A%E7%95%8C/&title=算法 | 动态开点线段树的理论空间上界"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://yxhxianyu.fun/2021/10/26/%E5%8A%A8%E6%80%81%E5%BC%80%E7%82%B9%E7%BA%BF%E6%AE%B5%E6%A0%91%E7%9A%84%E7%90%86%E8%AE%BA%E7%A9%BA%E9%97%B4%E4%B8%8A%E7%95%8C/&title=算法 | 动态开点线段树的理论空间上界"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://yxhxianyu.fun/2021/10/26/%E5%8A%A8%E6%80%81%E5%BC%80%E7%82%B9%E7%BA%BF%E6%AE%B5%E6%A0%91%E7%9A%84%E7%90%86%E8%AE%BA%E7%A9%BA%E9%97%B4%E4%B8%8A%E7%95%8C/&title=算法 | 动态开点线段树的理论空间上界"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://yxhxianyu.fun/2021/10/26/%E5%8A%A8%E6%80%81%E5%BC%80%E7%82%B9%E7%BA%BF%E6%AE%B5%E6%A0%91%E7%9A%84%E7%90%86%E8%AE%BA%E7%A9%BA%E9%97%B4%E4%B8%8A%E7%95%8C/&name=算法 | 动态开点线段树的理论空间上界&description=&lt;p&gt;关于 “许多博客中，给出的&lt;strong&gt;动态开点线段树&lt;/strong&gt;  &lt;strong&gt;空间复杂度不够精确&lt;/strong&gt;“ 的问题。&lt;/p&gt;
+&lt;hr&gt;"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://yxhxianyu.fun/2021/10/26/%E5%8A%A8%E6%80%81%E5%BC%80%E7%82%B9%E7%BA%BF%E6%AE%B5%E6%A0%91%E7%9A%84%E7%90%86%E8%AE%BA%E7%A9%BA%E9%97%B4%E4%B8%8A%E7%95%8C/&t=算法 | 动态开点线段树的理论空间上界"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E5%BC%80%E7%82%B9%E7%BA%BF%E6%AE%B5%E6%A0%91"><span class="toc-number">2.</span> <span class="toc-text">动态开点线段树</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%93%E8%AE%BA"><span class="toc-number">3.</span> <span class="toc-text">结论</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%81%87%E8%AE%BE"><span class="toc-number">3.1.</span> <span class="toc-text">假设</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%93%E8%AE%BA-1"><span class="toc-number">3.2.</span> <span class="toc-text">结论</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AD%A3%E6%96%87"><span class="toc-number">4.</span> <span class="toc-text">正文</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%8D%E7%B2%BE%E7%A1%AE%E7%9A%84%E7%BB%93%E8%AE%BA"><span class="toc-number">4.1.</span> <span class="toc-text">不精确的结论</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E6%89%80%E5%9C%A8"><span class="toc-number">4.2.</span> <span class="toc-text">问题所在</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8E%A8%E5%AF%BC"><span class="toc-number">4.3.</span> <span class="toc-text">推导</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A3%80%E9%AA%8C"><span class="toc-number">5.</span> <span class="toc-text">检验</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9A%8F%E4%BE%BF%E5%86%99%E5%86%99"><span class="toc-number">6.</span> <span class="toc-text">随便写写</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        算法 | 动态开点线段树的理论空间上界
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">YXHXianYu</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2021-10-26T07:43:27.000Z" class="dt-published" itemprop="datePublished">2021-10-26</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a>
+    </div>
+
+
+    </div>
+    
+  </header>
+  
+
+  
+  <div class="content e-content" itemprop="articleBody">
+    <p>关于 “许多博客中，给出的<strong>动态开点线段树</strong>  <strong>空间复杂度不够精确</strong>“ 的问题。</p>
+<hr>
+<span id="more"></span>
+
+<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>10.25晚，在做codeforces round751 div2时，卡在了D题。</p>
+<p>正好little_sun同学有事找我，我就把这道题丢了过去，然后他迅速给了个 <strong>线段树优化建图</strong> 的做法。</p>
+<p>10.26下午的摸鱼课，我就来先学学前置算法 · <strong>动态开点线段树了</strong>。</p>
+<hr>
+<h3 id="动态开点线段树"><a href="#动态开点线段树" class="headerlink" title="动态开点线段树"></a>动态开点线段树</h3><p>动态开点线段树的核心思想，就是通过 <strong>动态开点</strong>，来 <strong>节约大量的空间</strong>。</p>
+<p><del>同时，它也是线段树优化建图等算法的前置技能，或者说<strong>技巧</strong>。</del></p>
+<blockquote>
+<p>2021.10.29更正：线段树优化建图 不需要 动态开点线段树</p>
+</blockquote>
+<blockquote>
+<p>如果你还不了解 动态开点线段树，可以参考 <a target="_blank" rel="noopener" href="https://www.baidu.com/s?ie=UTF-8&wd=%E5%8A%A8%E6%80%81%E5%BC%80%E7%82%B9%E7%BA%BF%E6%AE%B5%E6%A0%91">动态开点线段树</a></p>
+</blockquote>
+<p>比如在 <a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P1908">LuoguP1908逆序对</a> 这道题中，我们可以用动态开点线段树来直接处理 <strong>[1,1e9]</strong> 的数据。</p>
+<p>但是我根据博客教程写了一发，结果当场MLE。</p>
+<p>参考题解，题解中把 最大空间 $O(nlogm)$ 直接缩小成了 $O(n * 14)$。</p>
+<p>这就令人百思不得其解，翻遍整道题的题解也没有找到合适的解释。</p>
+<p>在经过试验后，我发现网络上 <strong>大部分博客</strong> 的动态开点线段树的空间复杂度 <strong>存在着不精确</strong>，实际空间复杂度应该小于 $O(nlogm)$</p>
+<hr>
+<h3 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h3><h4 id="假设"><a href="#假设" class="headerlink" title="假设"></a>假设</h4><p>​	动态开点线段树 的 区间长度为 $v$；</p>
+<p>​	在操作时，总共修改 $n$ 次；</p>
+<h4 id="结论-1"><a href="#结论-1" class="headerlink" title="结论"></a>结论</h4><p>​	总开点次数 $\large sum \leq 2^{log_2^n+log_2^{ln^2}}+n*(log_2^{\ \frac{v}{n}}+log_2^{ln^2})$</p>
+<p>​	空间复杂度 即 $O(sum)$</p>
+<hr>
+<h3 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h3><h4 id="不精确的结论"><a href="#不精确的结论" class="headerlink" title="不精确的结论"></a>不精确的结论</h4><p>首先，为什么大部分博客给出的空间复杂度上界为 $O(nlogv)$ ？</p>
+<p>假设有 $n$ 次操作，每次操作最多能访问 $logv$ 个节点（这是线段树的基本结论）</p>
+<p>根据乘法原理，我们很直观地得到了：一次运行中，线段树最多访问 $nlogv$ 个节点。</p>
+<p>我们只创建访问到的节点，所以动态开点线段树的空间复杂度自然而然的就为 $O(nlogv)$</p>
+<h4 id="问题所在"><a href="#问题所在" class="headerlink" title="问题所在"></a>问题所在</h4><p>看到这里，其实 <strong>所谓的不精确</strong> 就已经呼之欲出了。</p>
+<p>在每次操作时，线段树的前几层的节点都已经创建完毕，<strong>无需再创建</strong>。</p>
+<p>换句话说，每次操作访问到的 $logv$ 个节点，不一定都需要创建新点。</p>
+<h4 id="推导"><a href="#推导" class="headerlink" title="推导"></a>推导</h4><p>先设一下算法中的 <strong>常量</strong></p>
+<ul>
+<li>$v: 线段树的区间长度$</li>
+<li>$n: 总操作次数$</li>
+</ul>
+<p>而既然误差在那些重复访问的点，我们可以假设 <strong>变量</strong></p>
+<ul>
+<li>$k: 在算法结束时，前k层的节点已经全部创建完毕$<ul>
+<li>注意，这里的 $k$ 不一定为正整数，可能为实数</li>
+<li>即 $k \in [0, logv+1]$</li>
+</ul>
+</li>
+</ul>
+<p>这里的假设或许不一定能得到最优解，我们先不深入讨论。</p>
+<p>根据以上变量，我们能直观的得到一个<strong>更精确</strong>的开点次数</p>
+<ul>
+<li>$sum &#x3D; (2^k-1)+n*(log_2^v-k)$<ul>
+<li>$(2^k-1): 前k层创建的节点$</li>
+<li>$n*(log_2^v-k): 每次操作中，新创建的节点$</li>
+</ul>
+</li>
+</ul>
+<p>设 函数 $f(k) &#x3D; (2^k-1)+n*(log_2^v-k), k \in [0, logv+1]$，则</p>
+<p>$f’(k)&#x3D;2^k*ln_2-n$，且显然，$f’(k)$ 单调递增</p>
+<p>设存在 $f’(k_0)&#x3D;0$，得到</p>
+<p>$k_0 &#x3D; log_2^n - log2^{ln^2}$</p>
+<p>当 $k \in [0, k_0)$ 时，$f(k)$ 递减</p>
+<p>当 $k \in (k_0, logv+1)$ 时，$f(k)$ 递增，得</p>
+<p>$ f(k)\geq f(k_0)&#x3D;2^{log_2^n+log_2^{ln^2}}+n*(log_2^{\ \frac{v}{n}}+log_2^{ln^2})$</p>
+<p>即 总开点次数 $sum \leq 2^{log_2^n+log_2^{ln^2}}+n*(log_2^{\ \frac{v}{n}}+log_2^{ln^2})$</p>
+<hr>
+<h3 id="检验"><a href="#检验" class="headerlink" title="检验"></a>检验</h3><p>以 <a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P1908">LuoguP1908</a> 为例。</p>
+<p>$ n \leq 5e5，v \leq 1e9$</p>
+<p>普通线段树 空间复杂度 $O(4 * v)&#x3D;4e9$</p>
+<p>动态开点线段树 不精确的空间复杂度 $O(nlogv) &#x3D; 15e6$</p>
+<p>动态开点线段树 在上述结论下的空间复杂度 $O(sum) \leq 6.47e6$</p>
+<p>而在我自己出的极限数据下，动态开点线段树，实际开点数量为 $6.43e6$</p>
+
+        <a data-fancybox="gallery" href="/2021/10/26/%E5%8A%A8%E6%80%81%E5%BC%80%E7%82%B9%E7%BA%BF%E6%AE%B5%E6%A0%91%E7%9A%84%E7%90%86%E8%AE%BA%E7%A9%BA%E9%97%B4%E4%B8%8A%E7%95%8C/1.png">
+          <img src="/2021/10/26/%E5%8A%A8%E6%80%81%E5%BC%80%E7%82%B9%E7%BA%BF%E6%AE%B5%E6%A0%91%E7%9A%84%E7%90%86%E8%AE%BA%E7%A9%BA%E9%97%B4%E4%B8%8A%E7%95%8C/1.png" />
+        </a>
+        
+
+<p>而如果你按照 $15e6$ 开数组空间，则<strong>无法通过</strong>这道题。</p>
+<p>数组空间必须在 $10e6$ 内才能通过本题。</p>
+<p><strong>而有了精确的上界，你可以在开 $6.47e6$ 数组空间的情况下通过本题！</strong></p>
+
+        <a data-fancybox="gallery" href="/2021/10/26/%E5%8A%A8%E6%80%81%E5%BC%80%E7%82%B9%E7%BA%BF%E6%AE%B5%E6%A0%91%E7%9A%84%E7%90%86%E8%AE%BA%E7%A9%BA%E9%97%B4%E4%B8%8A%E7%95%8C/2.png">
+          <img src="/2021/10/26/%E5%8A%A8%E6%80%81%E5%BC%80%E7%82%B9%E7%BA%BF%E6%AE%B5%E6%A0%91%E7%9A%84%E7%90%86%E8%AE%BA%E7%A9%BA%E9%97%B4%E4%B8%8A%E7%95%8C/2.png" />
+        </a>
+        
+
+
+        <a data-fancybox="gallery" href="/2021/10/26/%E5%8A%A8%E6%80%81%E5%BC%80%E7%82%B9%E7%BA%BF%E6%AE%B5%E6%A0%91%E7%9A%84%E7%90%86%E8%AE%BA%E7%A9%BA%E9%97%B4%E4%B8%8A%E7%95%8C/3.png">
+          <img src="/2021/10/26/%E5%8A%A8%E6%80%81%E5%BC%80%E7%82%B9%E7%BA%BF%E6%AE%B5%E6%A0%91%E7%9A%84%E7%90%86%E8%AE%BA%E7%A9%BA%E9%97%B4%E4%B8%8A%E7%95%8C/3.png" />
+        </a>
+        
+
+<hr>
+<h3 id="随便写写"><a href="#随便写写" class="headerlink" title="随便写写"></a>随便写写</h3><p>推出来是很爽的！</p>
+<ul>
+<li><p>但不知道有没有更准确的上界。</p>
+</li>
+<li><p>并且当前的上界值在实际写题时较难计算，</p>
+<p>如果之后有机会的话，可以尝试用一个小常数来替换这一整串式子。</p>
+<p>否则只能根据题目要求空间来开数组大小了。</p>
+</li>
+<li><p>下次看到这种解释不清楚的东西，还是要深究一下，说不定就有意想不到的收获呢！</p>
+</li>
+<li><p><strong>OI is AWESOME！</strong></p>
+</li>
+</ul>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">首页</a></li>
+        
+          <li><a href="/about/">关于我</a></li>
+        
+          <li><a href="/archives/">所有文章</a></li>
+        
+          <li><a href="/tags/">所有标签</a></li>
+        
+          <li><a href="/friends/">友情链接</a></li>
+        
+          <li><a href="/search/">站内搜索</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E5%BC%80%E7%82%B9%E7%BA%BF%E6%AE%B5%E6%A0%91"><span class="toc-number">2.</span> <span class="toc-text">动态开点线段树</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%93%E8%AE%BA"><span class="toc-number">3.</span> <span class="toc-text">结论</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%81%87%E8%AE%BE"><span class="toc-number">3.1.</span> <span class="toc-text">假设</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%93%E8%AE%BA-1"><span class="toc-number">3.2.</span> <span class="toc-text">结论</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AD%A3%E6%96%87"><span class="toc-number">4.</span> <span class="toc-text">正文</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%8D%E7%B2%BE%E7%A1%AE%E7%9A%84%E7%BB%93%E8%AE%BA"><span class="toc-number">4.1.</span> <span class="toc-text">不精确的结论</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E6%89%80%E5%9C%A8"><span class="toc-number">4.2.</span> <span class="toc-text">问题所在</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8E%A8%E5%AF%BC"><span class="toc-number">4.3.</span> <span class="toc-text">推导</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A3%80%E9%AA%8C"><span class="toc-number">5.</span> <span class="toc-text">检验</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9A%8F%E4%BE%BF%E5%86%99%E5%86%99"><span class="toc-number">6.</span> <span class="toc-text">随便写写</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://yxhxianyu.fun/2021/10/26/%E5%8A%A8%E6%80%81%E5%BC%80%E7%82%B9%E7%BA%BF%E6%AE%B5%E6%A0%91%E7%9A%84%E7%90%86%E8%AE%BA%E7%A9%BA%E9%97%B4%E4%B8%8A%E7%95%8C/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://yxhxianyu.fun/2021/10/26/%E5%8A%A8%E6%80%81%E5%BC%80%E7%82%B9%E7%BA%BF%E6%AE%B5%E6%A0%91%E7%9A%84%E7%90%86%E8%AE%BA%E7%A9%BA%E9%97%B4%E4%B8%8A%E7%95%8C/&text=算法 | 动态开点线段树的理论空间上界"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://yxhxianyu.fun/2021/10/26/%E5%8A%A8%E6%80%81%E5%BC%80%E7%82%B9%E7%BA%BF%E6%AE%B5%E6%A0%91%E7%9A%84%E7%90%86%E8%AE%BA%E7%A9%BA%E9%97%B4%E4%B8%8A%E7%95%8C/&title=算法 | 动态开点线段树的理论空间上界"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yxhxianyu.fun/2021/10/26/%E5%8A%A8%E6%80%81%E5%BC%80%E7%82%B9%E7%BA%BF%E6%AE%B5%E6%A0%91%E7%9A%84%E7%90%86%E8%AE%BA%E7%A9%BA%E9%97%B4%E4%B8%8A%E7%95%8C/&is_video=false&description=算法 | 动态开点线段树的理论空间上界"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=算法 | 动态开点线段树的理论空间上界&body=Check out this article: http://yxhxianyu.fun/2021/10/26/%E5%8A%A8%E6%80%81%E5%BC%80%E7%82%B9%E7%BA%BF%E6%AE%B5%E6%A0%91%E7%9A%84%E7%90%86%E8%AE%BA%E7%A9%BA%E9%97%B4%E4%B8%8A%E7%95%8C/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://yxhxianyu.fun/2021/10/26/%E5%8A%A8%E6%80%81%E5%BC%80%E7%82%B9%E7%BA%BF%E6%AE%B5%E6%A0%91%E7%9A%84%E7%90%86%E8%AE%BA%E7%A9%BA%E9%97%B4%E4%B8%8A%E7%95%8C/&title=算法 | 动态开点线段树的理论空间上界"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://yxhxianyu.fun/2021/10/26/%E5%8A%A8%E6%80%81%E5%BC%80%E7%82%B9%E7%BA%BF%E6%AE%B5%E6%A0%91%E7%9A%84%E7%90%86%E8%AE%BA%E7%A9%BA%E9%97%B4%E4%B8%8A%E7%95%8C/&title=算法 | 动态开点线段树的理论空间上界"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://yxhxianyu.fun/2021/10/26/%E5%8A%A8%E6%80%81%E5%BC%80%E7%82%B9%E7%BA%BF%E6%AE%B5%E6%A0%91%E7%9A%84%E7%90%86%E8%AE%BA%E7%A9%BA%E9%97%B4%E4%B8%8A%E7%95%8C/&title=算法 | 动态开点线段树的理论空间上界"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://yxhxianyu.fun/2021/10/26/%E5%8A%A8%E6%80%81%E5%BC%80%E7%82%B9%E7%BA%BF%E6%AE%B5%E6%A0%91%E7%9A%84%E7%90%86%E8%AE%BA%E7%A9%BA%E9%97%B4%E4%B8%8A%E7%95%8C/&title=算法 | 动态开点线段树的理论空间上界"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://yxhxianyu.fun/2021/10/26/%E5%8A%A8%E6%80%81%E5%BC%80%E7%82%B9%E7%BA%BF%E6%AE%B5%E6%A0%91%E7%9A%84%E7%90%86%E8%AE%BA%E7%A9%BA%E9%97%B4%E4%B8%8A%E7%95%8C/&name=算法 | 动态开点线段树的理论空间上界&description=&lt;p&gt;关于 “许多博客中，给出的&lt;strong&gt;动态开点线段树&lt;/strong&gt;  &lt;strong&gt;空间复杂度不够精确&lt;/strong&gt;“ 的问题。&lt;/p&gt;
+&lt;hr&gt;"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://yxhxianyu.fun/2021/10/26/%E5%8A%A8%E6%80%81%E5%BC%80%E7%82%B9%E7%BA%BF%E6%AE%B5%E6%A0%91%E7%9A%84%E7%90%86%E8%AE%BA%E7%A9%BA%E9%97%B4%E4%B8%8A%E7%95%8C/&t=算法 | 动态开点线段树的理论空间上界"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2021-2025
+    YXHXianYu
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于我</a></li><!--
+     --><!--
+       --><li><a href="/archives/">所有文章</a></li><!--
+     --><!--
+       --><li><a href="/tags/">所有标签</a></li><!--
+     --><!--
+       --><li><a href="/friends/">友情链接</a></li><!--
+     --><!--
+       --><li><a href="/search/">站内搜索</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+  <!-- fancybox -->
+  
+    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
+    <script>
+      Fancybox.bind('[data-fancybox="gallery"]', {
+        //
+      });    
+    </script>
+  
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

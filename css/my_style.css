@@ -1,0 +1,17 @@
+body {
+  background: url("/images/background.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+  opacity: 1;
+}
+body>.content-wrapper {
+  background: #fff;
+  width: 100%;
+  height: 100%;
+  padding: 0 8rem 0 8rem;
+}
+body.max-width {
+  max-width: 64rem;
+}

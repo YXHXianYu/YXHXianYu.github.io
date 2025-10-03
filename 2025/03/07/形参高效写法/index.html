@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="1. 简介 本文探讨了函数形参的三种写法 方法一：const T&amp; —— 最常见 方法二：const T&amp; + T&amp;&amp; + move 方法三：T + move   换句话说 写代码的时候，经常会遇到，一个类的成员函数，需要从外部接收一个值，然后存到自己的成员变量里 然后关于这个问题，C++里怎么写，效率最高（结合move语义）    2. 实验内容 编译器：gcc.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="技术向 | C++函数形参怎么写效率最高? constT&amp; OR T&amp;&amp;">
+<meta property="og:url" content="http://yxhxianyu.fun/2025/03/07/%E5%BD%A2%E5%8F%82%E9%AB%98%E6%95%88%E5%86%99%E6%B3%95/index.html">
+<meta property="og:site_name" content="咸鱼鱼のBlog">
+<meta property="og:description" content="1. 简介 本文探讨了函数形参的三种写法 方法一：const T&amp; —— 最常见 方法二：const T&amp; + T&amp;&amp; + move 方法三：T + move   换句话说 写代码的时候，经常会遇到，一个类的成员函数，需要从外部接收一个值，然后存到自己的成员变量里 然后关于这个问题，C++里怎么写，效率最高（结合move语义）    2. 实验内容 编译器：gcc.">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-03-06T16:08:27.000Z">
+<meta property="article:modified_time" content="2025-10-03T02:47:41.359Z">
+<meta property="article:author" content="YXHXianYu">
+<meta property="article:tag" content="技术向">
+<meta property="article:tag" content="C++">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon/web-app-manifest-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>技术向 | C++函数形参怎么写效率最高? constT&amp; OR T&amp;&amp;</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+  <!-- fancybox -->
+  
+    <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css"
+          />
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于我</a></li><!--
+     --><!--
+       --><li><a href="/archives/">所有文章</a></li><!--
+     --><!--
+       --><li><a href="/tags/">所有标签</a></li><!--
+     --><!--
+       --><li><a href="/friends/">友情链接</a></li><!--
+     --><!--
+       --><li><a href="/search/">站内搜索</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/2025/03/28/2024-11-2025-3-GameRecord/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/2024/12/19/YXH%E5%92%B8%E9%B1%BC%E6%95%99%E4%BD%A0%E5%81%9A%E6%A2%A6%C2%B7%E5%86%8D%E5%90%AF%E8%88%AAIV-%E6%9D%A5%E8%87%AA%E6%B7%B1%E6%B8%8A/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://yxhxianyu.fun/2025/03/07/%E5%BD%A2%E5%8F%82%E9%AB%98%E6%95%88%E5%86%99%E6%B3%95/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://yxhxianyu.fun/2025/03/07/%E5%BD%A2%E5%8F%82%E9%AB%98%E6%95%88%E5%86%99%E6%B3%95/&text=技术向 | C++函数形参怎么写效率最高? constT&amp; OR T&amp;&amp;"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://yxhxianyu.fun/2025/03/07/%E5%BD%A2%E5%8F%82%E9%AB%98%E6%95%88%E5%86%99%E6%B3%95/&title=技术向 | C++函数形参怎么写效率最高? constT&amp; OR T&amp;&amp;"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yxhxianyu.fun/2025/03/07/%E5%BD%A2%E5%8F%82%E9%AB%98%E6%95%88%E5%86%99%E6%B3%95/&is_video=false&description=技术向 | C++函数形参怎么写效率最高? constT&amp; OR T&amp;&amp;"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=技术向 | C++函数形参怎么写效率最高? constT&amp; OR T&amp;&amp;&body=Check out this article: http://yxhxianyu.fun/2025/03/07/%E5%BD%A2%E5%8F%82%E9%AB%98%E6%95%88%E5%86%99%E6%B3%95/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://yxhxianyu.fun/2025/03/07/%E5%BD%A2%E5%8F%82%E9%AB%98%E6%95%88%E5%86%99%E6%B3%95/&title=技术向 | C++函数形参怎么写效率最高? constT&amp; OR T&amp;&amp;"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://yxhxianyu.fun/2025/03/07/%E5%BD%A2%E5%8F%82%E9%AB%98%E6%95%88%E5%86%99%E6%B3%95/&title=技术向 | C++函数形参怎么写效率最高? constT&amp; OR T&amp;&amp;"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://yxhxianyu.fun/2025/03/07/%E5%BD%A2%E5%8F%82%E9%AB%98%E6%95%88%E5%86%99%E6%B3%95/&title=技术向 | C++函数形参怎么写效率最高? constT&amp; OR T&amp;&amp;"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://yxhxianyu.fun/2025/03/07/%E5%BD%A2%E5%8F%82%E9%AB%98%E6%95%88%E5%86%99%E6%B3%95/&title=技术向 | C++函数形参怎么写效率最高? constT&amp; OR T&amp;&amp;"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://yxhxianyu.fun/2025/03/07/%E5%BD%A2%E5%8F%82%E9%AB%98%E6%95%88%E5%86%99%E6%B3%95/&name=技术向 | C++函数形参怎么写效率最高? constT&amp; OR T&amp;&amp;&description=&lt;h2 id=&#34;1-简介&#34;&gt;&lt;a href=&#34;#1-简介&#34; class=&#34;headerlink&#34; title=&#34;1. 简介&#34;&gt;&lt;/a&gt;1. 简介&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;本文探讨了函数形参的三种写法&lt;ul&gt;
+&lt;li&gt;方法一：&lt;code&gt;const T&amp;amp;&lt;/code&gt; —— 最常见&lt;/li&gt;
+&lt;li&gt;方法二：&lt;code&gt;const T&amp;amp;&lt;/code&gt; + &lt;code&gt;T&amp;amp;&amp;amp; + move&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;方法三：&lt;code&gt;T + move&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;换句话说&lt;ul&gt;
+&lt;li&gt;写代码的时候，经常会遇到，一个类的成员函数，需要从外部接收一个值，然后存到自己的成员变量里&lt;/li&gt;
+&lt;li&gt;然后关于这个问题，C++里怎么写，效率最高（结合move语义）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;2-实验内容&#34;&gt;&lt;a href=&#34;#2-实验内容&#34; class=&#34;headerlink&#34; title=&#34;2. 实验内容&#34;&gt;&lt;/a&gt;2. 实验内容&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;编译器：&lt;code&gt;gcc.exe (x86_64-win32-seh-rev1, Built by MinGW-Builds project) 13.1.0&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;编译命令：&lt;code&gt;g++ main.cpp -std=c++17 -O3 &amp;amp;&amp;amp; .\a.exe&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;代码1：只实现了 &lt;code&gt;const T&amp;amp;&lt;/code&gt;（最平凡的写法）&lt;/p&gt;
+&lt;figure class=&#34;highlight c++&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;meta&#34;&gt;#&lt;span class=&#34;keyword&#34;&gt;include&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;&amp;lt;bits/stdc++.h&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;keyword&#34;&gt;using&lt;/span&gt; uint = &lt;span class=&#34;type&#34;&gt;uint32_t&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;keyword&#34;&gt;struct&lt;/span&gt; &lt;span class=&#34;title class_&#34;&gt;S&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;built_in&#34;&gt;S&lt;/span&gt;() &amp;#123; std::cout &amp;lt;&amp;lt; &lt;span class=&#34;string&#34;&gt;&amp;quot;\tS Default&amp;quot;&lt;/span&gt; &amp;lt;&amp;lt; std::endl; &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;built_in&#34;&gt;S&lt;/span&gt;(&lt;span class=&#34;type&#34;&gt;const&lt;/span&gt; S&amp;amp;) &amp;#123; std::cout &amp;lt;&amp;lt; &lt;span class=&#34;string&#34;&gt;&amp;quot;\tS Copy&amp;quot;&lt;/span&gt; &amp;lt;&amp;lt; std::endl; &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;built_in&#34;&gt;S&lt;/span&gt;(S&amp;amp;&amp;amp;) &amp;#123; std::cout &amp;lt;&amp;lt; &lt;span class=&#34;string&#34;&gt;&amp;quot;\tS Move&amp;quot;&lt;/span&gt; &amp;lt;&amp;lt; std::endl; &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;#125;;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;keyword&#34;&gt;struct&lt;/span&gt; &lt;span class=&#34;title class_&#34;&gt;Node&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;built_in&#34;&gt;Node&lt;/span&gt;(&lt;span class=&#34;type&#34;&gt;const&lt;/span&gt; S&amp;amp; t) : &lt;span class=&#34;built_in&#34;&gt;m_t&lt;/span&gt;(t) &amp;#123; std::cout &amp;lt;&amp;lt; &lt;span class=&#34;string&#34;&gt;&amp;quot;Node Copy&amp;quot;&lt;/span&gt; &amp;lt;&amp;lt; std::endl; &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;comment&#34;&gt;// Node(S&amp;amp;&amp;amp; t) : m_t(std::move(t)) &amp;#123; std::cout &amp;lt;&amp;lt; &amp;quot;Node Move&amp;quot; &amp;lt;&amp;lt; std::endl; &amp;#125;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;comment&#34;&gt;// Node(S t) : m_t(std::move(t)) &amp;#123; std::cout &amp;lt;&amp;lt; &amp;quot;Move&amp;quot; &amp;lt;&amp;lt; std::endl; &amp;#125;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    S &lt;span class=&#34;type&#34;&gt;m_t&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;#125;;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;function&#34;&gt;&lt;span class=&#34;type&#34;&gt;int&lt;/span&gt; &lt;span class=&#34;title&#34;&gt;main&lt;/span&gt;&lt;span class=&#34;params&#34;&gt;()&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    S t;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    std::cout &amp;lt;&amp;lt; &lt;span class=&#34;string&#34;&gt;&amp;quot;Start&amp;quot;&lt;/span&gt; &amp;lt;&amp;lt; std::endl;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;function&#34;&gt;Node &lt;span class=&#34;title&#34;&gt;node1&lt;/span&gt;&lt;span class=&#34;params&#34;&gt;(t)&lt;/span&gt;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;function&#34;&gt;Node &lt;span class=&#34;title&#34;&gt;node2&lt;/span&gt;&lt;span class=&#34;params&#34;&gt;(std::move(t))&lt;/span&gt;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;keyword&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;number&#34;&gt;0&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;/*&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;输出为：&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;        S Default&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;Start&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;        S Copy&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;Node Copy&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;        S Copy&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;Node Copy&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;*/&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;代码2：同时实现了 &lt;code&gt;const T&amp;amp;&lt;/code&gt; 和 &lt;code&gt;T&amp;amp;&amp;amp;&lt;/code&gt;&lt;/p&gt;
+&lt;figure class=&#34;highlight c++&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;meta&#34;&gt;#&lt;span class=&#34;keyword&#34;&gt;include&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;&amp;lt;bits/stdc++.h&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;keyword&#34;&gt;using&lt;/span&gt; uint = &lt;span class=&#34;type&#34;&gt;uint32_t&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;keyword&#34;&gt;struct&lt;/span&gt; &lt;span class=&#34;title class_&#34;&gt;S&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;built_in&#34;&gt;S&lt;/span&gt;() &amp;#123; std::cout &amp;lt;&amp;lt; &lt;span class=&#34;string&#34;&gt;&amp;quot;\tS Default&amp;quot;&lt;/span&gt; &amp;lt;&amp;lt; std::endl; &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;built_in&#34;&gt;S&lt;/span&gt;(&lt;span class=&#34;type&#34;&gt;const&lt;/span&gt; S&amp;amp;) &amp;#123; std::cout &amp;lt;&amp;lt; &lt;span class=&#34;string&#34;&gt;&amp;quot;\tS Copy&amp;quot;&lt;/span&gt; &amp;lt;&amp;lt; std::endl; &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;built_in&#34;&gt;S&lt;/span&gt;(S&amp;amp;&amp;amp;) &amp;#123; std::cout &amp;lt;&amp;lt; &lt;span class=&#34;string&#34;&gt;&amp;quot;\tS Move&amp;quot;&lt;/span&gt; &amp;lt;&amp;lt; std::endl; &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;#125;;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;keyword&#34;&gt;struct&lt;/span&gt; &lt;span class=&#34;title class_&#34;&gt;Node&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;built_in&#34;&gt;Node&lt;/span&gt;(&lt;span class=&#34;type&#34;&gt;const&lt;/span&gt; S&amp;amp; t) : &lt;span class=&#34;built_in&#34;&gt;m_t&lt;/span&gt;(t) &amp;#123; std::cout &amp;lt;&amp;lt; &lt;span class=&#34;string&#34;&gt;&amp;quot;Node Copy&amp;quot;&lt;/span&gt; &amp;lt;&amp;lt; std::endl; &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;built_in&#34;&gt;Node&lt;/span&gt;(S&amp;amp;&amp;amp; t) : &lt;span class=&#34;built_in&#34;&gt;m_t&lt;/span&gt;(std::&lt;span class=&#34;built_in&#34;&gt;move&lt;/span&gt;(t)) &amp;#123; std::cout &amp;lt;&amp;lt; &lt;span class=&#34;string&#34;&gt;&amp;quot;Node Move&amp;quot;&lt;/span&gt; &amp;lt;&amp;lt; std::endl; &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;comment&#34;&gt;// Node(S t) : m_t(std::move(t)) &amp;#123; std::cout &amp;lt;&amp;lt; &amp;quot;Move&amp;quot; &amp;lt;&amp;lt; std::endl; &amp;#125;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    S &lt;span class=&#34;type&#34;&gt;m_t&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;#125;;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;function&#34;&gt;&lt;span class=&#34;type&#34;&gt;int&lt;/span&gt; &lt;span class=&#34;title&#34;&gt;main&lt;/span&gt;&lt;span class=&#34;params&#34;&gt;()&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    S t;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    std::cout &amp;lt;&amp;lt; &lt;span class=&#34;string&#34;&gt;&amp;quot;Start&amp;quot;&lt;/span&gt; &amp;lt;&amp;lt; std::endl;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;function&#34;&gt;Node &lt;span class=&#34;title&#34;&gt;node1&lt;/span&gt;&lt;span class=&#34;params&#34;&gt;(t)&lt;/span&gt;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;function&#34;&gt;Node &lt;span class=&#34;title&#34;&gt;node2&lt;/span&gt;&lt;span class=&#34;params&#34;&gt;(std::move(t))&lt;/span&gt;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;keyword&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;number&#34;&gt;0&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;/*&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;输出为：&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;        S Default&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;Start&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;        S Copy&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;Node Copy&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;        S Move&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;Node Move&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;*/&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;代码3：实现了 &lt;code&gt;T&lt;/code&gt;&lt;/p&gt;
+&lt;figure class=&#34;highlight c++&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;meta&#34;&gt;#&lt;span class=&#34;keyword&#34;&gt;include&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;&amp;lt;bits/stdc++.h&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;keyword&#34;&gt;using&lt;/span&gt; uint = &lt;span class=&#34;type&#34;&gt;uint32_t&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;keyword&#34;&gt;struct&lt;/span&gt; &lt;span class=&#34;title class_&#34;&gt;S&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;built_in&#34;&gt;S&lt;/span&gt;() &amp;#123; std::cout &amp;lt;&amp;lt; &lt;span class=&#34;string&#34;&gt;&amp;quot;\tS Default&amp;quot;&lt;/span&gt; &amp;lt;&amp;lt; std::endl; &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;built_in&#34;&gt;S&lt;/span&gt;(&lt;span class=&#34;type&#34;&gt;const&lt;/span&gt; S&amp;amp;) &amp;#123; std::cout &amp;lt;&amp;lt; &lt;span class=&#34;string&#34;&gt;&amp;quot;\tS Copy&amp;quot;&lt;/span&gt; &amp;lt;&amp;lt; std::endl; &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;built_in&#34;&gt;S&lt;/span&gt;(S&amp;amp;&amp;amp;) &amp;#123; std::cout &amp;lt;&amp;lt; &lt;span class=&#34;string&#34;&gt;&amp;quot;\tS Move&amp;quot;&lt;/span&gt; &amp;lt;&amp;lt; std::endl; &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;#125;;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;keyword&#34;&gt;struct&lt;/span&gt; &lt;span class=&#34;title class_&#34;&gt;Node&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;comment&#34;&gt;// Node(const S&amp;amp; t) : m_t(t) &amp;#123; std::cout &amp;lt;&amp;lt; &amp;quot;Node Copy&amp;quot; &amp;lt;&amp;lt; std::endl; &amp;#125;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;comment&#34;&gt;// Node(S&amp;amp;&amp;amp; t) : m_t(std::move(t)) &amp;#123; std::cout &amp;lt;&amp;lt; &amp;quot;Node Move&amp;quot; &amp;lt;&amp;lt; std::endl; &amp;#125;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;built_in&#34;&gt;Node&lt;/span&gt;(S t) : &lt;span class=&#34;built_in&#34;&gt;m_t&lt;/span&gt;(std::&lt;span class=&#34;built_in&#34;&gt;move&lt;/span&gt;(t)) &amp;#123; std::cout &amp;lt;&amp;lt; &lt;span class=&#34;string&#34;&gt;&amp;quot;Move&amp;quot;&lt;/span&gt; &amp;lt;&amp;lt; std::endl; &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    S &lt;span class=&#34;type&#34;&gt;m_t&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;#125;;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;function&#34;&gt;&lt;span class=&#34;type&#34;&gt;int&lt;/span&gt; &lt;span class=&#34;title&#34;&gt;main&lt;/span&gt;&lt;span class=&#34;params&#34;&gt;()&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    S t;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    std::cout &amp;lt;&amp;lt; &lt;span class=&#34;string&#34;&gt;&amp;quot;Start&amp;quot;&lt;/span&gt; &amp;lt;&amp;lt; std::endl;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;function&#34;&gt;Node &lt;span class=&#34;title&#34;&gt;node1&lt;/span&gt;&lt;span class=&#34;params&#34;&gt;(t)&lt;/span&gt;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;function&#34;&gt;Node &lt;span class=&#34;title&#34;&gt;node2&lt;/span&gt;&lt;span class=&#34;params&#34;&gt;(std::move(t))&lt;/span&gt;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;keyword&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;number&#34;&gt;0&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;/*&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;输出为：&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;        S Default&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;Start&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;        S Copy&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;        S Move&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;Move&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;        S Move&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;        S Move&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;Move&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;*/&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;3-实验结果&#34;&gt;&lt;a href=&#34;#3-实验结果&#34; class=&#34;headerlink&#34; title=&#34;3. 实验结果&#34;&gt;&lt;/a&gt;3. 实验结果&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;总结&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;编号&lt;/th&gt;
+&lt;th&gt;内容&lt;/th&gt;
+&lt;th&gt;实参左值&lt;/th&gt;
+&lt;th&gt;实参右值&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;&lt;tr&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;只实现了 &lt;code&gt;const T&amp;amp;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Copy&lt;/td&gt;
+&lt;td&gt;Copy&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;同时实现了 &lt;code&gt;const T&amp;amp;&lt;/code&gt; 和 &lt;code&gt;T&amp;amp;&amp;amp;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Copy&lt;/td&gt;
+&lt;td&gt;Move&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;3&lt;/td&gt;
+&lt;td&gt;实现了 &lt;code&gt;T&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Copy + Move&lt;/td&gt;
+&lt;td&gt;Move + Move&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;所以，&lt;strong&gt;为了极致的性能，应该同时实现 &lt;code&gt;const T&amp;amp;&lt;/code&gt; 和 &lt;code&gt;T&amp;amp;&amp;amp;&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;4-参考&#34;&gt;&lt;a href=&#34;#4-参考&#34; class=&#34;headerlink&#34; title=&#34;4. 参考&#34;&gt;&lt;/a&gt;4. 参考&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;C++的函数形参什么时候应该使用右值引用？ - 二律背反的回答 - 知乎&lt;br&gt;&lt;a href=&#34;https://www.zhihu.com/question/37834703/answer/151976989&#34;&gt;https://www.zhihu.com/question/37834703/answer/151976989&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://yxhxianyu.fun/2025/03/07/%E5%BD%A2%E5%8F%82%E9%AB%98%E6%95%88%E5%86%99%E6%B3%95/&t=技术向 | C++函数形参怎么写效率最高? constT&amp; OR T&amp;&amp;"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E7%AE%80%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text">1. 简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%AE%9E%E9%AA%8C%E5%86%85%E5%AE%B9"><span class="toc-number">2.</span> <span class="toc-text">2. 实验内容</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%AE%9E%E9%AA%8C%E7%BB%93%E6%9E%9C"><span class="toc-number">3.</span> <span class="toc-text">3. 实验结果</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%8F%82%E8%80%83"><span class="toc-number">4.</span> <span class="toc-text">4. 参考</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        技术向 | C++函数形参怎么写效率最高? constT&amp; OR T&amp;&amp;
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">YXHXianYu</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2025-03-06T16:08:27.000Z" class="dt-published" itemprop="datePublished">2025-03-07</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/C/" rel="tag">C++</a>, <a class="p-category" href="/tags/%E6%8A%80%E6%9C%AF%E5%90%91/" rel="tag">技术向</a>
+    </div>
+
+
+    </div>
+    
+  </header>
+  
+
+  
+  <div class="content e-content" itemprop="articleBody">
+    <h2 id="1-简介"><a href="#1-简介" class="headerlink" title="1. 简介"></a>1. 简介</h2><ul>
+<li>本文探讨了函数形参的三种写法<ul>
+<li>方法一：<code>const T&amp;</code> —— 最常见</li>
+<li>方法二：<code>const T&amp;</code> + <code>T&amp;&amp; + move</code></li>
+<li>方法三：<code>T + move</code></li>
+</ul>
+</li>
+<li>换句话说<ul>
+<li>写代码的时候，经常会遇到，一个类的成员函数，需要从外部接收一个值，然后存到自己的成员变量里</li>
+<li>然后关于这个问题，C++里怎么写，效率最高（结合move语义）</li>
+</ul>
+</li>
+</ul>
+<h2 id="2-实验内容"><a href="#2-实验内容" class="headerlink" title="2. 实验内容"></a>2. 实验内容</h2><ul>
+<li><p>编译器：<code>gcc.exe (x86_64-win32-seh-rev1, Built by MinGW-Builds project) 13.1.0</code></p>
+</li>
+<li><p>编译命令：<code>g++ main.cpp -std=c++17 -O3 &amp;&amp; .\a.exe</code></p>
+</li>
+<li><p>代码1：只实现了 <code>const T&amp;</code>（最平凡的写法）</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> uint = <span class="type">uint32_t</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">S</span> &#123;</span><br><span class="line">    <span class="built_in">S</span>() &#123; std::cout &lt;&lt; <span class="string">&quot;\tS Default&quot;</span> &lt;&lt; std::endl; &#125;</span><br><span class="line">    <span class="built_in">S</span>(<span class="type">const</span> S&amp;) &#123; std::cout &lt;&lt; <span class="string">&quot;\tS Copy&quot;</span> &lt;&lt; std::endl; &#125;</span><br><span class="line">    <span class="built_in">S</span>(S&amp;&amp;) &#123; std::cout &lt;&lt; <span class="string">&quot;\tS Move&quot;</span> &lt;&lt; std::endl; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Node</span> &#123;</span><br><span class="line">    <span class="built_in">Node</span>(<span class="type">const</span> S&amp; t) : <span class="built_in">m_t</span>(t) &#123; std::cout &lt;&lt; <span class="string">&quot;Node Copy&quot;</span> &lt;&lt; std::endl; &#125;</span><br><span class="line">    <span class="comment">// Node(S&amp;&amp; t) : m_t(std::move(t)) &#123; std::cout &lt;&lt; &quot;Node Move&quot; &lt;&lt; std::endl; &#125;</span></span><br><span class="line">    <span class="comment">// Node(S t) : m_t(std::move(t)) &#123; std::cout &lt;&lt; &quot;Move&quot; &lt;&lt; std::endl; &#125;</span></span><br><span class="line">    S <span class="type">m_t</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    S t;</span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Start&quot;</span> &lt;&lt; std::endl;</span><br><span class="line"></span><br><span class="line">    <span class="function">Node <span class="title">node1</span><span class="params">(t)</span></span>;</span><br><span class="line">    <span class="function">Node <span class="title">node2</span><span class="params">(std::move(t))</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">输出为：</span></span><br><span class="line"><span class="comment">        S Default</span></span><br><span class="line"><span class="comment">Start</span></span><br><span class="line"><span class="comment">        S Copy</span></span><br><span class="line"><span class="comment">Node Copy</span></span><br><span class="line"><span class="comment">        S Copy</span></span><br><span class="line"><span class="comment">Node Copy</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>代码2：同时实现了 <code>const T&amp;</code> 和 <code>T&amp;&amp;</code></p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> uint = <span class="type">uint32_t</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">S</span> &#123;</span><br><span class="line">    <span class="built_in">S</span>() &#123; std::cout &lt;&lt; <span class="string">&quot;\tS Default&quot;</span> &lt;&lt; std::endl; &#125;</span><br><span class="line">    <span class="built_in">S</span>(<span class="type">const</span> S&amp;) &#123; std::cout &lt;&lt; <span class="string">&quot;\tS Copy&quot;</span> &lt;&lt; std::endl; &#125;</span><br><span class="line">    <span class="built_in">S</span>(S&amp;&amp;) &#123; std::cout &lt;&lt; <span class="string">&quot;\tS Move&quot;</span> &lt;&lt; std::endl; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Node</span> &#123;</span><br><span class="line">    <span class="built_in">Node</span>(<span class="type">const</span> S&amp; t) : <span class="built_in">m_t</span>(t) &#123; std::cout &lt;&lt; <span class="string">&quot;Node Copy&quot;</span> &lt;&lt; std::endl; &#125;</span><br><span class="line">    <span class="built_in">Node</span>(S&amp;&amp; t) : <span class="built_in">m_t</span>(std::<span class="built_in">move</span>(t)) &#123; std::cout &lt;&lt; <span class="string">&quot;Node Move&quot;</span> &lt;&lt; std::endl; &#125;</span><br><span class="line">    <span class="comment">// Node(S t) : m_t(std::move(t)) &#123; std::cout &lt;&lt; &quot;Move&quot; &lt;&lt; std::endl; &#125;</span></span><br><span class="line">    S <span class="type">m_t</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    S t;</span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Start&quot;</span> &lt;&lt; std::endl;</span><br><span class="line"></span><br><span class="line">    <span class="function">Node <span class="title">node1</span><span class="params">(t)</span></span>;</span><br><span class="line">    <span class="function">Node <span class="title">node2</span><span class="params">(std::move(t))</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">输出为：</span></span><br><span class="line"><span class="comment">        S Default</span></span><br><span class="line"><span class="comment">Start</span></span><br><span class="line"><span class="comment">        S Copy</span></span><br><span class="line"><span class="comment">Node Copy</span></span><br><span class="line"><span class="comment">        S Move</span></span><br><span class="line"><span class="comment">Node Move</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>代码3：实现了 <code>T</code></p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> uint = <span class="type">uint32_t</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">S</span> &#123;</span><br><span class="line">    <span class="built_in">S</span>() &#123; std::cout &lt;&lt; <span class="string">&quot;\tS Default&quot;</span> &lt;&lt; std::endl; &#125;</span><br><span class="line">    <span class="built_in">S</span>(<span class="type">const</span> S&amp;) &#123; std::cout &lt;&lt; <span class="string">&quot;\tS Copy&quot;</span> &lt;&lt; std::endl; &#125;</span><br><span class="line">    <span class="built_in">S</span>(S&amp;&amp;) &#123; std::cout &lt;&lt; <span class="string">&quot;\tS Move&quot;</span> &lt;&lt; std::endl; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Node</span> &#123;</span><br><span class="line">    <span class="comment">// Node(const S&amp; t) : m_t(t) &#123; std::cout &lt;&lt; &quot;Node Copy&quot; &lt;&lt; std::endl; &#125;</span></span><br><span class="line">    <span class="comment">// Node(S&amp;&amp; t) : m_t(std::move(t)) &#123; std::cout &lt;&lt; &quot;Node Move&quot; &lt;&lt; std::endl; &#125;</span></span><br><span class="line">    <span class="built_in">Node</span>(S t) : <span class="built_in">m_t</span>(std::<span class="built_in">move</span>(t)) &#123; std::cout &lt;&lt; <span class="string">&quot;Move&quot;</span> &lt;&lt; std::endl; &#125;</span><br><span class="line">    S <span class="type">m_t</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    S t;</span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Start&quot;</span> &lt;&lt; std::endl;</span><br><span class="line"></span><br><span class="line">    <span class="function">Node <span class="title">node1</span><span class="params">(t)</span></span>;</span><br><span class="line">    <span class="function">Node <span class="title">node2</span><span class="params">(std::move(t))</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">输出为：</span></span><br><span class="line"><span class="comment">        S Default</span></span><br><span class="line"><span class="comment">Start</span></span><br><span class="line"><span class="comment">        S Copy</span></span><br><span class="line"><span class="comment">        S Move</span></span><br><span class="line"><span class="comment">Move</span></span><br><span class="line"><span class="comment">        S Move</span></span><br><span class="line"><span class="comment">        S Move</span></span><br><span class="line"><span class="comment">Move</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="3-实验结果"><a href="#3-实验结果" class="headerlink" title="3. 实验结果"></a>3. 实验结果</h2><ul>
+<li><p>总结</p>
+<ul>
+<li><table>
+<thead>
+<tr>
+<th>编号</th>
+<th>内容</th>
+<th>实参左值</th>
+<th>实参右值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>只实现了 <code>const T&amp;</code></td>
+<td>Copy</td>
+<td>Copy</td>
+</tr>
+<tr>
+<td>2</td>
+<td>同时实现了 <code>const T&amp;</code> 和 <code>T&amp;&amp;</code></td>
+<td>Copy</td>
+<td>Move</td>
+</tr>
+<tr>
+<td>3</td>
+<td>实现了 <code>T</code></td>
+<td>Copy + Move</td>
+<td>Move + Move</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>所以，<strong>为了极致的性能，应该同时实现 <code>const T&amp;</code> 和 <code>T&amp;&amp;</code></strong></p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="4-参考"><a href="#4-参考" class="headerlink" title="4. 参考"></a>4. 参考</h2><ul>
+<li>C++的函数形参什么时候应该使用右值引用？ - 二律背反的回答 - 知乎<br><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/37834703/answer/151976989">https://www.zhihu.com/question/37834703/answer/151976989</a></li>
+</ul>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">首页</a></li>
+        
+          <li><a href="/about/">关于我</a></li>
+        
+          <li><a href="/archives/">所有文章</a></li>
+        
+          <li><a href="/tags/">所有标签</a></li>
+        
+          <li><a href="/friends/">友情链接</a></li>
+        
+          <li><a href="/search/">站内搜索</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E7%AE%80%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text">1. 简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%AE%9E%E9%AA%8C%E5%86%85%E5%AE%B9"><span class="toc-number">2.</span> <span class="toc-text">2. 实验内容</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%AE%9E%E9%AA%8C%E7%BB%93%E6%9E%9C"><span class="toc-number">3.</span> <span class="toc-text">3. 实验结果</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%8F%82%E8%80%83"><span class="toc-number">4.</span> <span class="toc-text">4. 参考</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://yxhxianyu.fun/2025/03/07/%E5%BD%A2%E5%8F%82%E9%AB%98%E6%95%88%E5%86%99%E6%B3%95/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://yxhxianyu.fun/2025/03/07/%E5%BD%A2%E5%8F%82%E9%AB%98%E6%95%88%E5%86%99%E6%B3%95/&text=技术向 | C++函数形参怎么写效率最高? constT&amp; OR T&amp;&amp;"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://yxhxianyu.fun/2025/03/07/%E5%BD%A2%E5%8F%82%E9%AB%98%E6%95%88%E5%86%99%E6%B3%95/&title=技术向 | C++函数形参怎么写效率最高? constT&amp; OR T&amp;&amp;"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yxhxianyu.fun/2025/03/07/%E5%BD%A2%E5%8F%82%E9%AB%98%E6%95%88%E5%86%99%E6%B3%95/&is_video=false&description=技术向 | C++函数形参怎么写效率最高? constT&amp; OR T&amp;&amp;"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=技术向 | C++函数形参怎么写效率最高? constT&amp; OR T&amp;&amp;&body=Check out this article: http://yxhxianyu.fun/2025/03/07/%E5%BD%A2%E5%8F%82%E9%AB%98%E6%95%88%E5%86%99%E6%B3%95/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://yxhxianyu.fun/2025/03/07/%E5%BD%A2%E5%8F%82%E9%AB%98%E6%95%88%E5%86%99%E6%B3%95/&title=技术向 | C++函数形参怎么写效率最高? constT&amp; OR T&amp;&amp;"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://yxhxianyu.fun/2025/03/07/%E5%BD%A2%E5%8F%82%E9%AB%98%E6%95%88%E5%86%99%E6%B3%95/&title=技术向 | C++函数形参怎么写效率最高? constT&amp; OR T&amp;&amp;"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://yxhxianyu.fun/2025/03/07/%E5%BD%A2%E5%8F%82%E9%AB%98%E6%95%88%E5%86%99%E6%B3%95/&title=技术向 | C++函数形参怎么写效率最高? constT&amp; OR T&amp;&amp;"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://yxhxianyu.fun/2025/03/07/%E5%BD%A2%E5%8F%82%E9%AB%98%E6%95%88%E5%86%99%E6%B3%95/&title=技术向 | C++函数形参怎么写效率最高? constT&amp; OR T&amp;&amp;"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://yxhxianyu.fun/2025/03/07/%E5%BD%A2%E5%8F%82%E9%AB%98%E6%95%88%E5%86%99%E6%B3%95/&name=技术向 | C++函数形参怎么写效率最高? constT&amp; OR T&amp;&amp;&description=&lt;h2 id=&#34;1-简介&#34;&gt;&lt;a href=&#34;#1-简介&#34; class=&#34;headerlink&#34; title=&#34;1. 简介&#34;&gt;&lt;/a&gt;1. 简介&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;本文探讨了函数形参的三种写法&lt;ul&gt;
+&lt;li&gt;方法一：&lt;code&gt;const T&amp;amp;&lt;/code&gt; —— 最常见&lt;/li&gt;
+&lt;li&gt;方法二：&lt;code&gt;const T&amp;amp;&lt;/code&gt; + &lt;code&gt;T&amp;amp;&amp;amp; + move&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;方法三：&lt;code&gt;T + move&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;换句话说&lt;ul&gt;
+&lt;li&gt;写代码的时候，经常会遇到，一个类的成员函数，需要从外部接收一个值，然后存到自己的成员变量里&lt;/li&gt;
+&lt;li&gt;然后关于这个问题，C++里怎么写，效率最高（结合move语义）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;2-实验内容&#34;&gt;&lt;a href=&#34;#2-实验内容&#34; class=&#34;headerlink&#34; title=&#34;2. 实验内容&#34;&gt;&lt;/a&gt;2. 实验内容&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;编译器：&lt;code&gt;gcc.exe (x86_64-win32-seh-rev1, Built by MinGW-Builds project) 13.1.0&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;编译命令：&lt;code&gt;g++ main.cpp -std=c++17 -O3 &amp;amp;&amp;amp; .\a.exe&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;代码1：只实现了 &lt;code&gt;const T&amp;amp;&lt;/code&gt;（最平凡的写法）&lt;/p&gt;
+&lt;figure class=&#34;highlight c++&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;meta&#34;&gt;#&lt;span class=&#34;keyword&#34;&gt;include&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;&amp;lt;bits/stdc++.h&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;keyword&#34;&gt;using&lt;/span&gt; uint = &lt;span class=&#34;type&#34;&gt;uint32_t&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;keyword&#34;&gt;struct&lt;/span&gt; &lt;span class=&#34;title class_&#34;&gt;S&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;built_in&#34;&gt;S&lt;/span&gt;() &amp;#123; std::cout &amp;lt;&amp;lt; &lt;span class=&#34;string&#34;&gt;&amp;quot;\tS Default&amp;quot;&lt;/span&gt; &amp;lt;&amp;lt; std::endl; &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;built_in&#34;&gt;S&lt;/span&gt;(&lt;span class=&#34;type&#34;&gt;const&lt;/span&gt; S&amp;amp;) &amp;#123; std::cout &amp;lt;&amp;lt; &lt;span class=&#34;string&#34;&gt;&amp;quot;\tS Copy&amp;quot;&lt;/span&gt; &amp;lt;&amp;lt; std::endl; &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;built_in&#34;&gt;S&lt;/span&gt;(S&amp;amp;&amp;amp;) &amp;#123; std::cout &amp;lt;&amp;lt; &lt;span class=&#34;string&#34;&gt;&amp;quot;\tS Move&amp;quot;&lt;/span&gt; &amp;lt;&amp;lt; std::endl; &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;#125;;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;keyword&#34;&gt;struct&lt;/span&gt; &lt;span class=&#34;title class_&#34;&gt;Node&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;built_in&#34;&gt;Node&lt;/span&gt;(&lt;span class=&#34;type&#34;&gt;const&lt;/span&gt; S&amp;amp; t) : &lt;span class=&#34;built_in&#34;&gt;m_t&lt;/span&gt;(t) &amp;#123; std::cout &amp;lt;&amp;lt; &lt;span class=&#34;string&#34;&gt;&amp;quot;Node Copy&amp;quot;&lt;/span&gt; &amp;lt;&amp;lt; std::endl; &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;comment&#34;&gt;// Node(S&amp;amp;&amp;amp; t) : m_t(std::move(t)) &amp;#123; std::cout &amp;lt;&amp;lt; &amp;quot;Node Move&amp;quot; &amp;lt;&amp;lt; std::endl; &amp;#125;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;comment&#34;&gt;// Node(S t) : m_t(std::move(t)) &amp;#123; std::cout &amp;lt;&amp;lt; &amp;quot;Move&amp;quot; &amp;lt;&amp;lt; std::endl; &amp;#125;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    S &lt;span class=&#34;type&#34;&gt;m_t&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;#125;;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;function&#34;&gt;&lt;span class=&#34;type&#34;&gt;int&lt;/span&gt; &lt;span class=&#34;title&#34;&gt;main&lt;/span&gt;&lt;span class=&#34;params&#34;&gt;()&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    S t;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    std::cout &amp;lt;&amp;lt; &lt;span class=&#34;string&#34;&gt;&amp;quot;Start&amp;quot;&lt;/span&gt; &amp;lt;&amp;lt; std::endl;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;function&#34;&gt;Node &lt;span class=&#34;title&#34;&gt;node1&lt;/span&gt;&lt;span class=&#34;params&#34;&gt;(t)&lt;/span&gt;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;function&#34;&gt;Node &lt;span class=&#34;title&#34;&gt;node2&lt;/span&gt;&lt;span class=&#34;params&#34;&gt;(std::move(t))&lt;/span&gt;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;keyword&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;number&#34;&gt;0&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;/*&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;输出为：&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;        S Default&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;Start&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;        S Copy&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;Node Copy&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;        S Copy&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;Node Copy&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;*/&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;代码2：同时实现了 &lt;code&gt;const T&amp;amp;&lt;/code&gt; 和 &lt;code&gt;T&amp;amp;&amp;amp;&lt;/code&gt;&lt;/p&gt;
+&lt;figure class=&#34;highlight c++&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;meta&#34;&gt;#&lt;span class=&#34;keyword&#34;&gt;include&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;&amp;lt;bits/stdc++.h&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;keyword&#34;&gt;using&lt;/span&gt; uint = &lt;span class=&#34;type&#34;&gt;uint32_t&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;keyword&#34;&gt;struct&lt;/span&gt; &lt;span class=&#34;title class_&#34;&gt;S&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;built_in&#34;&gt;S&lt;/span&gt;() &amp;#123; std::cout &amp;lt;&amp;lt; &lt;span class=&#34;string&#34;&gt;&amp;quot;\tS Default&amp;quot;&lt;/span&gt; &amp;lt;&amp;lt; std::endl; &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;built_in&#34;&gt;S&lt;/span&gt;(&lt;span class=&#34;type&#34;&gt;const&lt;/span&gt; S&amp;amp;) &amp;#123; std::cout &amp;lt;&amp;lt; &lt;span class=&#34;string&#34;&gt;&amp;quot;\tS Copy&amp;quot;&lt;/span&gt; &amp;lt;&amp;lt; std::endl; &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;built_in&#34;&gt;S&lt;/span&gt;(S&amp;amp;&amp;amp;) &amp;#123; std::cout &amp;lt;&amp;lt; &lt;span class=&#34;string&#34;&gt;&amp;quot;\tS Move&amp;quot;&lt;/span&gt; &amp;lt;&amp;lt; std::endl; &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;#125;;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;keyword&#34;&gt;struct&lt;/span&gt; &lt;span class=&#34;title class_&#34;&gt;Node&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;built_in&#34;&gt;Node&lt;/span&gt;(&lt;span class=&#34;type&#34;&gt;const&lt;/span&gt; S&amp;amp; t) : &lt;span class=&#34;built_in&#34;&gt;m_t&lt;/span&gt;(t) &amp;#123; std::cout &amp;lt;&amp;lt; &lt;span class=&#34;string&#34;&gt;&amp;quot;Node Copy&amp;quot;&lt;/span&gt; &amp;lt;&amp;lt; std::endl; &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;built_in&#34;&gt;Node&lt;/span&gt;(S&amp;amp;&amp;amp; t) : &lt;span class=&#34;built_in&#34;&gt;m_t&lt;/span&gt;(std::&lt;span class=&#34;built_in&#34;&gt;move&lt;/span&gt;(t)) &amp;#123; std::cout &amp;lt;&amp;lt; &lt;span class=&#34;string&#34;&gt;&amp;quot;Node Move&amp;quot;&lt;/span&gt; &amp;lt;&amp;lt; std::endl; &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;comment&#34;&gt;// Node(S t) : m_t(std::move(t)) &amp;#123; std::cout &amp;lt;&amp;lt; &amp;quot;Move&amp;quot; &amp;lt;&amp;lt; std::endl; &amp;#125;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    S &lt;span class=&#34;type&#34;&gt;m_t&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;#125;;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;function&#34;&gt;&lt;span class=&#34;type&#34;&gt;int&lt;/span&gt; &lt;span class=&#34;title&#34;&gt;main&lt;/span&gt;&lt;span class=&#34;params&#34;&gt;()&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    S t;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    std::cout &amp;lt;&amp;lt; &lt;span class=&#34;string&#34;&gt;&amp;quot;Start&amp;quot;&lt;/span&gt; &amp;lt;&amp;lt; std::endl;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;function&#34;&gt;Node &lt;span class=&#34;title&#34;&gt;node1&lt;/span&gt;&lt;span class=&#34;params&#34;&gt;(t)&lt;/span&gt;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;function&#34;&gt;Node &lt;span class=&#34;title&#34;&gt;node2&lt;/span&gt;&lt;span class=&#34;params&#34;&gt;(std::move(t))&lt;/span&gt;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;keyword&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;number&#34;&gt;0&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;/*&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;输出为：&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;        S Default&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;Start&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;        S Copy&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;Node Copy&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;        S Move&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;Node Move&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;*/&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;代码3：实现了 &lt;code&gt;T&lt;/code&gt;&lt;/p&gt;
+&lt;figure class=&#34;highlight c++&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;meta&#34;&gt;#&lt;span class=&#34;keyword&#34;&gt;include&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;&amp;lt;bits/stdc++.h&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;keyword&#34;&gt;using&lt;/span&gt; uint = &lt;span class=&#34;type&#34;&gt;uint32_t&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;keyword&#34;&gt;struct&lt;/span&gt; &lt;span class=&#34;title class_&#34;&gt;S&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;built_in&#34;&gt;S&lt;/span&gt;() &amp;#123; std::cout &amp;lt;&amp;lt; &lt;span class=&#34;string&#34;&gt;&amp;quot;\tS Default&amp;quot;&lt;/span&gt; &amp;lt;&amp;lt; std::endl; &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;built_in&#34;&gt;S&lt;/span&gt;(&lt;span class=&#34;type&#34;&gt;const&lt;/span&gt; S&amp;amp;) &amp;#123; std::cout &amp;lt;&amp;lt; &lt;span class=&#34;string&#34;&gt;&amp;quot;\tS Copy&amp;quot;&lt;/span&gt; &amp;lt;&amp;lt; std::endl; &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;built_in&#34;&gt;S&lt;/span&gt;(S&amp;amp;&amp;amp;) &amp;#123; std::cout &amp;lt;&amp;lt; &lt;span class=&#34;string&#34;&gt;&amp;quot;\tS Move&amp;quot;&lt;/span&gt; &amp;lt;&amp;lt; std::endl; &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;#125;;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;keyword&#34;&gt;struct&lt;/span&gt; &lt;span class=&#34;title class_&#34;&gt;Node&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;comment&#34;&gt;// Node(const S&amp;amp; t) : m_t(t) &amp;#123; std::cout &amp;lt;&amp;lt; &amp;quot;Node Copy&amp;quot; &amp;lt;&amp;lt; std::endl; &amp;#125;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;comment&#34;&gt;// Node(S&amp;amp;&amp;amp; t) : m_t(std::move(t)) &amp;#123; std::cout &amp;lt;&amp;lt; &amp;quot;Node Move&amp;quot; &amp;lt;&amp;lt; std::endl; &amp;#125;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;built_in&#34;&gt;Node&lt;/span&gt;(S t) : &lt;span class=&#34;built_in&#34;&gt;m_t&lt;/span&gt;(std::&lt;span class=&#34;built_in&#34;&gt;move&lt;/span&gt;(t)) &amp;#123; std::cout &amp;lt;&amp;lt; &lt;span class=&#34;string&#34;&gt;&amp;quot;Move&amp;quot;&lt;/span&gt; &amp;lt;&amp;lt; std::endl; &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    S &lt;span class=&#34;type&#34;&gt;m_t&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;#125;;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;function&#34;&gt;&lt;span class=&#34;type&#34;&gt;int&lt;/span&gt; &lt;span class=&#34;title&#34;&gt;main&lt;/span&gt;&lt;span class=&#34;params&#34;&gt;()&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    S t;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    std::cout &amp;lt;&amp;lt; &lt;span class=&#34;string&#34;&gt;&amp;quot;Start&amp;quot;&lt;/span&gt; &amp;lt;&amp;lt; std::endl;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;function&#34;&gt;Node &lt;span class=&#34;title&#34;&gt;node1&lt;/span&gt;&lt;span class=&#34;params&#34;&gt;(t)&lt;/span&gt;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;function&#34;&gt;Node &lt;span class=&#34;title&#34;&gt;node2&lt;/span&gt;&lt;span class=&#34;params&#34;&gt;(std::move(t))&lt;/span&gt;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;keyword&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;number&#34;&gt;0&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;/*&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;输出为：&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;        S Default&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;Start&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;        S Copy&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;        S Move&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;Move&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;        S Move&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;        S Move&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;Move&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;*/&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;3-实验结果&#34;&gt;&lt;a href=&#34;#3-实验结果&#34; class=&#34;headerlink&#34; title=&#34;3. 实验结果&#34;&gt;&lt;/a&gt;3. 实验结果&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;总结&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;编号&lt;/th&gt;
+&lt;th&gt;内容&lt;/th&gt;
+&lt;th&gt;实参左值&lt;/th&gt;
+&lt;th&gt;实参右值&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;&lt;tr&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;只实现了 &lt;code&gt;const T&amp;amp;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Copy&lt;/td&gt;
+&lt;td&gt;Copy&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;同时实现了 &lt;code&gt;const T&amp;amp;&lt;/code&gt; 和 &lt;code&gt;T&amp;amp;&amp;amp;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Copy&lt;/td&gt;
+&lt;td&gt;Move&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;3&lt;/td&gt;
+&lt;td&gt;实现了 &lt;code&gt;T&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Copy + Move&lt;/td&gt;
+&lt;td&gt;Move + Move&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;所以，&lt;strong&gt;为了极致的性能，应该同时实现 &lt;code&gt;const T&amp;amp;&lt;/code&gt; 和 &lt;code&gt;T&amp;amp;&amp;amp;&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;4-参考&#34;&gt;&lt;a href=&#34;#4-参考&#34; class=&#34;headerlink&#34; title=&#34;4. 参考&#34;&gt;&lt;/a&gt;4. 参考&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;C++的函数形参什么时候应该使用右值引用？ - 二律背反的回答 - 知乎&lt;br&gt;&lt;a href=&#34;https://www.zhihu.com/question/37834703/answer/151976989&#34;&gt;https://www.zhihu.com/question/37834703/answer/151976989&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://yxhxianyu.fun/2025/03/07/%E5%BD%A2%E5%8F%82%E9%AB%98%E6%95%88%E5%86%99%E6%B3%95/&t=技术向 | C++函数形参怎么写效率最高? constT&amp; OR T&amp;&amp;"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2021-2025
+    YXHXianYu
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于我</a></li><!--
+     --><!--
+       --><li><a href="/archives/">所有文章</a></li><!--
+     --><!--
+       --><li><a href="/tags/">所有标签</a></li><!--
+     --><!--
+       --><li><a href="/friends/">友情链接</a></li><!--
+     --><!--
+       --><li><a href="/search/">站内搜索</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+  <!-- fancybox -->
+  
+    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
+    <script>
+      Fancybox.bind('[data-fancybox="gallery"]', {
+        //
+      });    
+    </script>
+  
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

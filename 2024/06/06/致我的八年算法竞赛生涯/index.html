@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="前言紧张刺激的保研生活以一种意外且迅速的方式落下帷幕，我很幸运地成为那少数能在六月初便确定去向的人。无论如何，现在终于有时间来完成那些令我心心念念的事情了。 所以，让我们来聊聊算法竞赛吧 —— 这个陪我度过八年人生的事业。 算法竞赛给我带来了开阔的视野、扎实的代码基础、深交的挚友们，让我认识到了我和大佬们的差距，让我深刻地懂得了自己的优势，也让我深入地思考了自己人生的意义。 谨以此文，告别我的八年">
+<meta property="og:type" content="article">
+<meta property="og:title" content="致我的八年算法竞赛生涯">
+<meta property="og:url" content="http://yxhxianyu.fun/2024/06/06/%E8%87%B4%E6%88%91%E7%9A%84%E5%85%AB%E5%B9%B4%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E7%94%9F%E6%B6%AF/index.html">
+<meta property="og:site_name" content="咸鱼鱼のBlog">
+<meta property="og:description" content="前言紧张刺激的保研生活以一种意外且迅速的方式落下帷幕，我很幸运地成为那少数能在六月初便确定去向的人。无论如何，现在终于有时间来完成那些令我心心念念的事情了。 所以，让我们来聊聊算法竞赛吧 —— 这个陪我度过八年人生的事业。 算法竞赛给我带来了开阔的视野、扎实的代码基础、深交的挚友们，让我认识到了我和大佬们的差距，让我深刻地懂得了自己的优势，也让我深入地思考了自己人生的意义。 谨以此文，告别我的八年">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yxhxianyu.fun/2024/06/06/%E8%87%B4%E6%88%91%E7%9A%84%E5%85%AB%E5%B9%B4%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E7%94%9F%E6%B6%AF/image-20240604011843294.png">
+<meta property="og:image" content="http://yxhxianyu.fun/2024/06/06/%E8%87%B4%E6%88%91%E7%9A%84%E5%85%AB%E5%B9%B4%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E7%94%9F%E6%B6%AF/5.png">
+<meta property="og:image" content="http://yxhxianyu.fun/2024/06/06/%E8%87%B4%E6%88%91%E7%9A%84%E5%85%AB%E5%B9%B4%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E7%94%9F%E6%B6%AF/pic1.png">
+<meta property="og:image" content="http://yxhxianyu.fun/2024/06/06/%E8%87%B4%E6%88%91%E7%9A%84%E5%85%AB%E5%B9%B4%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E7%94%9F%E6%B6%AF/image-20240604025445288.png">
+<meta property="og:image" content="http://yxhxianyu.fun/2024/06/06/%E8%87%B4%E6%88%91%E7%9A%84%E5%85%AB%E5%B9%B4%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E7%94%9F%E6%B6%AF/image-20240604030312705.png">
+<meta property="og:image" content="http://yxhxianyu.fun/2024/06/06/%E8%87%B4%E6%88%91%E7%9A%84%E5%85%AB%E5%B9%B4%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E7%94%9F%E6%B6%AF/image-20240605234056325.png">
+<meta property="og:image" content="http://yxhxianyu.fun/2024/06/06/%E8%87%B4%E6%88%91%E7%9A%84%E5%85%AB%E5%B9%B4%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E7%94%9F%E6%B6%AF/pic2.png">
+<meta property="article:published_time" content="2024-06-06T11:19:00.000Z">
+<meta property="article:modified_time" content="2025-10-03T02:47:41.360Z">
+<meta property="article:author" content="YXHXianYu">
+<meta property="article:tag" content="随笔">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yxhxianyu.fun/2024/06/06/%E8%87%B4%E6%88%91%E7%9A%84%E5%85%AB%E5%B9%B4%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E7%94%9F%E6%B6%AF/image-20240604011843294.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon/web-app-manifest-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>致我的八年算法竞赛生涯</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+  <!-- fancybox -->
+  
+    <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css"
+          />
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于我</a></li><!--
+     --><!--
+       --><li><a href="/archives/">所有文章</a></li><!--
+     --><!--
+       --><li><a href="/tags/">所有标签</a></li><!--
+     --><!--
+       --><li><a href="/friends/">友情链接</a></li><!--
+     --><!--
+       --><li><a href="/search/">站内搜索</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/2024/07/14/2024%E5%B9%B41-6%E6%9C%88%E6%B8%B8%E6%88%8F%E8%AE%B0%E5%BD%95/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/2024/03/22/YXH%E5%92%B8%E9%B1%BC%E6%95%99%E4%BD%A0%E5%81%9A%E6%A2%A6%C2%B7%E5%86%8D%E5%90%AF%E8%88%AAIII-/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://yxhxianyu.fun/2024/06/06/%E8%87%B4%E6%88%91%E7%9A%84%E5%85%AB%E5%B9%B4%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E7%94%9F%E6%B6%AF/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://yxhxianyu.fun/2024/06/06/%E8%87%B4%E6%88%91%E7%9A%84%E5%85%AB%E5%B9%B4%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E7%94%9F%E6%B6%AF/&text=致我的八年算法竞赛生涯"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://yxhxianyu.fun/2024/06/06/%E8%87%B4%E6%88%91%E7%9A%84%E5%85%AB%E5%B9%B4%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E7%94%9F%E6%B6%AF/&title=致我的八年算法竞赛生涯"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yxhxianyu.fun/2024/06/06/%E8%87%B4%E6%88%91%E7%9A%84%E5%85%AB%E5%B9%B4%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E7%94%9F%E6%B6%AF/&is_video=false&description=致我的八年算法竞赛生涯"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=致我的八年算法竞赛生涯&body=Check out this article: http://yxhxianyu.fun/2024/06/06/%E8%87%B4%E6%88%91%E7%9A%84%E5%85%AB%E5%B9%B4%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E7%94%9F%E6%B6%AF/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://yxhxianyu.fun/2024/06/06/%E8%87%B4%E6%88%91%E7%9A%84%E5%85%AB%E5%B9%B4%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E7%94%9F%E6%B6%AF/&title=致我的八年算法竞赛生涯"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://yxhxianyu.fun/2024/06/06/%E8%87%B4%E6%88%91%E7%9A%84%E5%85%AB%E5%B9%B4%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E7%94%9F%E6%B6%AF/&title=致我的八年算法竞赛生涯"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://yxhxianyu.fun/2024/06/06/%E8%87%B4%E6%88%91%E7%9A%84%E5%85%AB%E5%B9%B4%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E7%94%9F%E6%B6%AF/&title=致我的八年算法竞赛生涯"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://yxhxianyu.fun/2024/06/06/%E8%87%B4%E6%88%91%E7%9A%84%E5%85%AB%E5%B9%B4%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E7%94%9F%E6%B6%AF/&title=致我的八年算法竞赛生涯"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://yxhxianyu.fun/2024/06/06/%E8%87%B4%E6%88%91%E7%9A%84%E5%85%AB%E5%B9%B4%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E7%94%9F%E6%B6%AF/&name=致我的八年算法竞赛生涯&description=&lt;h2 id=&#34;前言&#34;&gt;&lt;a href=&#34;#前言&#34; class=&#34;headerlink&#34; title=&#34;前言&#34;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;紧张刺激的保研生活以一种意外且迅速的方式落下帷幕，我很幸运地成为那少数能在六月初便确定去向的人。无论如何，现在终于有时间来完成那些令我心心念念的事情了。&lt;/p&gt;
+&lt;p&gt;所以，让我们来聊聊算法竞赛吧 —— 这个陪我度过八年人生的事业。&lt;/p&gt;
+&lt;p&gt;算法竞赛给我带来了开阔的视野、扎实的代码基础、深交的挚友们，让我认识到了我和大佬们的差距，让我深刻地懂得了自己的优势，也让我深入地思考了自己人生的意义。&lt;/p&gt;
+&lt;p&gt;谨以此文，告别我的八年算法竞赛生涯，告别我那学生时代中最为热爱的事业吧！&lt;/p&gt;
+&lt;h2 id=&#34;初一-初二&#34;&gt;&lt;a href=&#34;#初一-初二&#34; class=&#34;headerlink&#34; title=&#34;初一&amp;amp;初二&#34;&gt;&lt;/a&gt;初一&amp;amp;初二&lt;/h2&gt;&lt;p&gt;那是2015年秋季，刚刚踏入福州第十九中学的我，在某次午休的时候，发现了学校的机房，也透过门扉发现了上课的学长学姐。我觉得他们很厉害。这大概是我遇见信息学（即算法竞赛）的第一眼。&lt;/p&gt;
+&lt;p&gt;随后，在一次机缘巧合之下，我参加了学校举办的信息学讲座。当时，王老师在台上讲着“斐波那契数列”，而我在台下想着什么呢？难道是一位天才少年立刻听懂了斐波那契数列的求解思路？不对！刚刚被父亲推荐《DOOM启示录》并读完这本书的我，深受约翰卡马克的鼓舞，在台下想的只有：“哇，是编程！学习编程是不是就可以做游戏了，好，我要学习编程做游戏”。&lt;/p&gt;
+&lt;p&gt;于是，我就报名了福州三中的信息学寒假入门班。我记得，寒假第一天上课时，机房座无虚席，乌泱泱的一片全是人，少说也有一百多位。但第二节课，人就少了快一半。到第二轮进阶班时，只剩下了不到二十位同学，坚持下来的同学非常少。后来，我和其中大约一半的同学都成为了要好的朋友，成为了八年之后仍在每天水群聊天的好伙伴。在我写下这段句子的前一天，DWTornier和Terry还向我安利《超自然车旅》这个游戏，他们成功了。&lt;/p&gt;
+&lt;p&gt;又过了一两个月，我加入了十九中的信息学社团，成为了一周两次在午休时跑到机房写代码听课的网瘾少年。王老师当时布置了许多题目，不知不觉就全部做完了。当时将题目全部做完的同学，印象中只有我和蓝猫。&lt;/p&gt;"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://yxhxianyu.fun/2024/06/06/%E8%87%B4%E6%88%91%E7%9A%84%E5%85%AB%E5%B9%B4%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E7%94%9F%E6%B6%AF/&t=致我的八年算法竞赛生涯"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9D%E4%B8%80-%E5%88%9D%E4%BA%8C"><span class="toc-number">2.</span> <span class="toc-text">初一&amp;初二</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9D%E4%B8%89"><span class="toc-number">3.</span> <span class="toc-text">初三</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%AB%98%E4%B8%80-%E9%AB%98%E4%BA%8C"><span class="toc-number">4.</span> <span class="toc-text">高一&amp;高二</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%AB%98%E4%B8%89"><span class="toc-number">5.</span> <span class="toc-text">高三</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%A7%E4%B8%80"><span class="toc-number">6.</span> <span class="toc-text">大一</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%A7%E4%BA%8C"><span class="toc-number">7.</span> <span class="toc-text">大二</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E5%9C%BA%E5%8C%BA%E5%9F%9F%E8%B5%9B-%E2%80%94%E2%80%94-2022-CCPC-%E5%A8%81%E6%B5%B7"><span class="toc-number">7.1.</span> <span class="toc-text">第一场区域赛 —— 2022 CCPC 威海</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E5%9C%BA%E5%8C%BA%E5%9F%9F%E8%B5%9B-%E2%80%94%E2%80%94-2022-CCPC-%E5%B9%BF%E5%B7%9E"><span class="toc-number">7.2.</span> <span class="toc-text">第二场区域赛 —— 2022 CCPC 广州</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E5%9C%BA%E5%8C%BA%E5%9F%9F%E8%B5%9B-%E2%80%94%E2%80%94-2022-ICPC-%E5%90%88%E8%82%A5"><span class="toc-number">7.3.</span> <span class="toc-text">第三场区域赛 —— 2022 ICPC 合肥</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E5%9C%BA%E5%8C%BA%E5%9F%9F%E8%B5%9B-%E2%80%94%E2%80%94-2022-ICPC-%E6%9D%AD%E5%B7%9E"><span class="toc-number">7.4.</span> <span class="toc-text">第四场区域赛 —— 2022 ICPC 杭州</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B5%9B%E5%AD%A3%E5%90%8E"><span class="toc-number">7.5.</span> <span class="toc-text">赛季后</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%A7%E4%B8%89"><span class="toc-number">8.</span> <span class="toc-text">大三</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%AD%E7%BB%83"><span class="toc-number">8.1.</span> <span class="toc-text">训练</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E5%9C%BA%E5%8C%BA%E5%9F%9F%E8%B5%9B-%E2%80%94%E2%80%94-2023-CCPC-%E7%A7%A6%E7%9A%87%E5%B2%9B"><span class="toc-number">8.2.</span> <span class="toc-text">第一场区域赛 —— 2023 CCPC 秦皇岛</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E3%80%81%E4%B8%89%E5%9C%BA%E5%8C%BA%E5%9F%9F%E8%B5%9B-%E2%80%94%E2%80%94-2023-ICPC-%E8%A5%BF%E5%AE%89%E7%AB%99%E3%80%81%E5%8D%97%E4%BA%AC%E7%AB%99"><span class="toc-number">8.3.</span> <span class="toc-text">第二、三场区域赛 —— 2023 ICPC 西安站、南京站</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AB"><span class="toc-number">9.</span> <span class="toc-text">末</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        致我的八年算法竞赛生涯
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">YXHXianYu</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-06-06T11:19:00.000Z" class="dt-published" itemprop="datePublished">2024-06-06</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/%E9%9A%8F%E7%AC%94/" rel="tag">随笔</a>
+    </div>
+
+
+    </div>
+    
+  </header>
+  
+
+  
+  <div class="content e-content" itemprop="articleBody">
+    <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>紧张刺激的保研生活以一种意外且迅速的方式落下帷幕，我很幸运地成为那少数能在六月初便确定去向的人。无论如何，现在终于有时间来完成那些令我心心念念的事情了。</p>
+<p>所以，让我们来聊聊算法竞赛吧 —— 这个陪我度过八年人生的事业。</p>
+<p>算法竞赛给我带来了开阔的视野、扎实的代码基础、深交的挚友们，让我认识到了我和大佬们的差距，让我深刻地懂得了自己的优势，也让我深入地思考了自己人生的意义。</p>
+<p>谨以此文，告别我的八年算法竞赛生涯，告别我那学生时代中最为热爱的事业吧！</p>
+<h2 id="初一-初二"><a href="#初一-初二" class="headerlink" title="初一&amp;初二"></a>初一&amp;初二</h2><p>那是2015年秋季，刚刚踏入福州第十九中学的我，在某次午休的时候，发现了学校的机房，也透过门扉发现了上课的学长学姐。我觉得他们很厉害。这大概是我遇见信息学（即算法竞赛）的第一眼。</p>
+<p>随后，在一次机缘巧合之下，我参加了学校举办的信息学讲座。当时，王老师在台上讲着“斐波那契数列”，而我在台下想着什么呢？难道是一位天才少年立刻听懂了斐波那契数列的求解思路？不对！刚刚被父亲推荐《DOOM启示录》并读完这本书的我，深受约翰卡马克的鼓舞，在台下想的只有：“哇，是编程！学习编程是不是就可以做游戏了，好，我要学习编程做游戏”。</p>
+<p>于是，我就报名了福州三中的信息学寒假入门班。我记得，寒假第一天上课时，机房座无虚席，乌泱泱的一片全是人，少说也有一百多位。但第二节课，人就少了快一半。到第二轮进阶班时，只剩下了不到二十位同学，坚持下来的同学非常少。后来，我和其中大约一半的同学都成为了要好的朋友，成为了八年之后仍在每天水群聊天的好伙伴。在我写下这段句子的前一天，DWTornier和Terry还向我安利《超自然车旅》这个游戏，他们成功了。</p>
+<p>又过了一两个月，我加入了十九中的信息学社团，成为了一周两次在午休时跑到机房写代码听课的网瘾少年。王老师当时布置了许多题目，不知不觉就全部做完了。当时将题目全部做完的同学，印象中只有我和蓝猫。</p>
+<p>再后来，到了初二，我就拿到了信息学竞赛普及组的一等奖，成为了十九中当时同年级唯一一名拿到一等奖的同学。</p>
+<h2 id="初三"><a href="#初三" class="headerlink" title="初三"></a>初三</h2><p>初三的我水平停滞不前。中午去机房写代码，周末去三中参加培训，我学信息学没什么目标，只是在做。</p>
+<p>当然，从那时起，我就再也没有假期了。无论是寒假还是暑假，我都会到三中参加集训，上午上课学算法，下午打比赛写题。</p>
+<p>而要说集训时光最快乐的，其实是“摸鱼”罢。是的，我集训生活中印象最深刻的，是“摸鱼”，是偷偷玩游戏，是一群人在机房里打CS1.6。我记得我可以用一把AWP单挑机房内所有的其他人，只要屏幕内出现了一个点，我就可以将鼠标挪到那个点上，所以我最喜欢玩的地图就是那张经典的平地狙击地图，把其他同学当作靶子打。</p>
+<p>后来，老师禁止了cs1.6，于是我们就开始在下午比赛的时候，用最快的速度写完所有题目的暴力分，然后开始自己写游戏玩。那是一场七天的集训，我们几个好朋友总共开发了至少五款游戏：我的凯撒传说、DWTornier的穿越空间站、蓝猫的OIer星球、IceLocke的Maze，还有我最喜欢的，同样出自IceLocke之手的OIer的生活 —— 我们之中游戏性最高的一款作品，<del>你甚至可以在里面通过援助交际进行赚钱</del>，可惜源码和可执行程序都已经丢失了。</p>
+
+        <a data-fancybox="gallery" href="/2024/06/06/%E8%87%B4%E6%88%91%E7%9A%84%E5%85%AB%E5%B9%B4%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E7%94%9F%E6%B6%AF/image-20240604011843294.png">
+          <img src="/2024/06/06/%E8%87%B4%E6%88%91%E7%9A%84%E5%85%AB%E5%B9%B4%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E7%94%9F%E6%B6%AF/image-20240604011843294.png" />
+        </a>
+        
+
+<blockquote>
+<p>凯撒传说 —— 我的第一款游戏，梦开始的地方</p>
+</blockquote>
+<p>所以，初三的信息学水平基本没有精进吧。那一年，虽然还是拿到了省一等奖，但是DrivenHank同学的分数反而超过了我。</p>
+<p>之后，便是中考了，升学的压力随之而来。而当时的我，并不知道省一等奖意味着什么。直到初三下学期的时候，王老师跟我说，省一等奖可以直接保送到福州三中，我才震惊了。</p>
+<p>我突然就不需要中考了。</p>
+<h2 id="高一-高二"><a href="#高一-高二" class="headerlink" title="高一&amp;高二"></a>高一&amp;高二</h2><p>确定能保送后，我从初三下学期开始，便跟随三中的黄老师进行集训。</p>
+<p>我当时非常非常地伤心，每天都很难受，因为，我以后再也无法看到初中班上可爱的女同学了（呃呃，下头男真的是）。从现在看来，这也是我人生的一个分水岭吧。在之后的人生中，直到现在，我都没有和异性再有过长时间的社交，令人感叹。</p>
+<blockquote>
+<p>“期待和恐惧，它们是邂逅的附赠品。” —— 《Flowers》白羽苏芳</p>
+</blockquote>
+<p>就这样，我进入了福州第三中学。认真开始集训后，水平有了极其明显的提升。</p>
+<p>在初三升高一，即2018年的暑假时，我到了浙江衢州的正睿OI参加信息学集训。那次集训，我见到了许多大佬，甚至被一群六年级的神仙暴打。最后作为惩罚活动，我还在一百多人面前唱《数鸭子》。现在回想起来，可真是不堪回首啊（笑）。</p>
+<p>我也多次到了浙江诸暨的海亮参加信息学集训。在海亮的生活，也是我信息学集训中最难忘的一段时光吧。在海亮，我第一次看见了雪，看见了那如梦似幻般的漫天大雪，看见了同学在雪地中画出的YYC AK IOI，看见了那小情侣在雪中踩出的爱心，最后，也看见了时代的变迁，自主招生的消逝，与强基计划的出现。</p>
+<p>当时的我，根本不知道自己的所欲所求，也只是随波逐流的一份子罢了。所以，我做出了我目前人生中最后悔的一个决定 —— 我退役了。我在NOIP中获得了全省前60名的成绩，在半年的时间中以省队选拔和国赛为目标，做了大量的努力，而最后，我却连省队选拔都没有参加，就退役了。</p>
+<p>哎。</p>
+<p>虽然退役了，但代码功夫还是不停，我还是每天的往机房跑。在接近一年的时间里，我自学了SDL2，写了一个实时的2D竞技场游戏，缝了点强化学习，发现自己打不过自己写的AI，最后莫名其妙地拿了某个比赛的第一。</p>
+
+        <a data-fancybox="gallery" href="/2024/06/06/%E8%87%B4%E6%88%91%E7%9A%84%E5%85%AB%E5%B9%B4%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E7%94%9F%E6%B6%AF/5.png">
+          <img src="/2024/06/06/%E8%87%B4%E6%88%91%E7%9A%84%E5%85%AB%E5%B9%B4%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E7%94%9F%E6%B6%AF/5.png" />
+        </a>
+        
+
+<blockquote>
+<p>在海亮集训时，IceLocke所拍摄的美景</p>
+</blockquote>
+<h2 id="高三"><a href="#高三" class="headerlink" title="高三"></a>高三</h2><p>升学的压力逐渐来临，但我不喜欢背书、不喜欢刷题、不喜欢天天坐在教室里日复一日地写着卷子。所以，我选择了代码。</p>
+<p>代码只是我逃避现实的一种手段，让自己看起来像在努力一样。</p>
+<p>我喜欢写游戏，正值GAMES101横空出世，于是我就在高三的自习课上刷GAMES101。陆陆续续地，我便把GAMES101全看完了，给每节课都做了工整的笔记。在那，我认识了图形学，认识了这个让我魂牵梦萦的东西。</p>
+<p>对于当时的我来说，图形学也只是我逃避高考的一种手段，虽然我确实喜欢她。</p>
+<p>但对于我来说，最幸运的就是，我还能考入北京交通大学。</p>
+<h2 id="大一"><a href="#大一" class="headerlink" title="大一"></a>大一</h2><p>我来到北京交通大学最首要的原因就是算法竞赛。</p>
+<p>三中的陈学长跟我说，北京交通大学和上海大学的ACM都还不错，比较适合你的分数。但上海大学当时的招生老师不是很友善，非常严肃地告诉我，省一不能转到计算机专业；而北交虽然同样对省一没有优待，但招生办的老师人很温柔，他说，省一或许可以转专业到计算机。所以我来到了北交。</p>
+<p>我对大学生活充满了期待，因为我终于可以不用把时间花在那些无聊的、浪费生命的、重复性的任务上了！初入大学时的我兴致高涨，在班主任刘老师的建议下准备保研。于是，在大一，我成为了一名不折不扣的卷王，甚至愿意在考试前背诵政治材料这种影响身心健康的东西。最后，我也取得了一个不错的排名，在软件学院的一百七十余人中位列第二。</p>
+<p>同时，在算法俱乐部水群的时候，我被rankyu学长发现，于是加入了ACM校队。凭借着高中还算扎实的基础，我在新生赛中拿到了冠军，在校赛中也拿到了冠军。</p>
+
+        <a data-fancybox="gallery" href="/2024/06/06/%E8%87%B4%E6%88%91%E7%9A%84%E5%85%AB%E5%B9%B4%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E7%94%9F%E6%B6%AF/pic1.png">
+          <img src="/2024/06/06/%E8%87%B4%E6%88%91%E7%9A%84%E5%85%AB%E5%B9%B4%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E7%94%9F%E6%B6%AF/pic1.png" />
+        </a>
+        
+
+<blockquote>
+<p>rankyu学长的消息</p>
+</blockquote>
+<h2 id="大二"><a href="#大二" class="headerlink" title="大二"></a>大二</h2><p>如果我的大一可以说是“崭露头角”，那么我的大二就可以说是“堕入低谷”吧。</p>
+<p>在大一的暑假来临前，我加入了pengym学长和rankyu学长的队伍 —— 白夜追风。随后，在暑期集训中，一起训练。但由于疫情的影响，线上集训的效果始终不佳，对我而言，摸鱼和划水成为了常态。</p>
+<p>大二上学期，赛季前，我们队一周训练三次，并且基本上每场都有补题。我们在虚拟训练赛中达到的排名，也能获得往年的金牌。</p>
+<p>那时的我，十分的自负，自负过头了，甚至说出了”我们队三个人，只需要一个人打就能拿银牌。所以三个人在一起，银牌肯定没问题，争取拿金牌就行了“这种话。</p>
+<h3 id="第一场区域赛-——-2022-CCPC-威海"><a href="#第一场区域赛-——-2022-CCPC-威海" class="headerlink" title="第一场区域赛 —— 2022 CCPC 威海"></a>第一场区域赛 —— 2022 CCPC 威海</h3><p>我们队因为题目读错，卡在了最简单的二水上，从开场卡到了比赛的103分钟。但凭借着扎实的能力，我们中期的过题速度很快，在53分钟中通过了4道题！最后位列银牌中段。</p>
+<p>”这次发挥这么差，我们还能拿银牌中游，下次顺利的话说不定就拿金了！“，赛后，我这么说。</p>
+<p>而谁又会知道呢，第一场的银牌便是我们赛季的巅峰。</p>
+<h3 id="第二场区域赛-——-2022-CCPC-广州"><a href="#第二场区域赛-——-2022-CCPC-广州" class="headerlink" title="第二场区域赛 —— 2022 CCPC 广州"></a>第二场区域赛 —— 2022 CCPC 广州</h3><p>广州站的前一小时，是巅峰的一小时，我们队迅雷不及掩耳之势在第44分钟时，便以0罚时的优势拿下了三道题，位列全场第三名！</p>
+<p>而令人绝望的，之后的四个多小时，我们一题都没有做出来。</p>
+
+        <a data-fancybox="gallery" href="/2024/06/06/%E8%87%B4%E6%88%91%E7%9A%84%E5%85%AB%E5%B9%B4%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E7%94%9F%E6%B6%AF/image-20240604025445288.png">
+          <img src="/2024/06/06/%E8%87%B4%E6%88%91%E7%9A%84%E5%85%AB%E5%B9%B4%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E7%94%9F%E6%B6%AF/image-20240604025445288.png" />
+        </a>
+        
+
+<blockquote>
+<p>排名趋势变化图，令人绝望</p>
+</blockquote>
+<p>那或许算得上是我生命中最折磨的四个小时之一了。</p>
+<p>或许大部分人的情况是：“有思路，但是代码实现出了问题”，而我们队则是：“根本没有想法” —— 四个小时，一道题的做法都没有想出来。</p>
+<p>我依稀记得，在封榜前几分钟，我开始尝试树上背包。但我当时已经知道，这个算法是错的，只不过是为了缓解自己的痛苦，所以还在写着代码而已。我写了半个多小时，放弃了。对着不完整的算法写了半个多小时的代码，事后自己都觉得可笑。但我笑不出来。</p>
+<p>这四小时中，周围的所有人都在慢慢的超过你，你的排名从前10，滑落到金牌区末尾，滑落到银牌区，最后滑落到铜牌区。</p>
+<p>反观同赛站的夏老师（大名鼎鼎的StarSilk），以零基础的身份，在这场比赛中第一次拿到了金牌，拿到了北京交通大学两年来第一个ACM金牌。</p>
+<h3 id="第三场区域赛-——-2022-ICPC-合肥"><a href="#第三场区域赛-——-2022-ICPC-合肥" class="headerlink" title="第三场区域赛 —— 2022 ICPC 合肥"></a>第三场区域赛 —— 2022 ICPC 合肥</h3><p>相比第一场比赛的题目读错、和第二场比赛的完全没有思路。我们队的第三场区域赛，则是彻彻底底地告诉我们：“菜”。</p>
+<p>没有任何的借口，有思路，但是代码调不出来，写不对。</p>
+<p>我们在封榜后进行了双开，希望能同时通过两道题目，朝金牌发起冲刺。然而，在比赛结束时，我们也一题都没通过。</p>
+<p>最后，我们只拿到了铜牌，并且是铜牌的第一名。</p>
+
+        <a data-fancybox="gallery" href="/2024/06/06/%E8%87%B4%E6%88%91%E7%9A%84%E5%85%AB%E5%B9%B4%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E7%94%9F%E6%B6%AF/image-20240604030312705.png">
+          <img src="/2024/06/06/%E8%87%B4%E6%88%91%E7%9A%84%E5%85%AB%E5%B9%B4%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E7%94%9F%E6%B6%AF/image-20240604030312705.png" />
+        </a>
+        
+
+<blockquote>
+<p>铜牌的第一名，遗憾</p>
+</blockquote>
+<h3 id="第四场区域赛-——-2022-ICPC-杭州"><a href="#第四场区域赛-——-2022-ICPC-杭州" class="headerlink" title="第四场区域赛 —— 2022 ICPC 杭州"></a>第四场区域赛 —— 2022 ICPC 杭州</h3><p>因为疫情的影响，这场比赛只能单人参加。讨论后，决定由我单人参加。</p>
+<p>赛前，我仍然在幻想着，自己能超常发挥，拿下金牌。而现实，算法竞赛，总是无情的，不会给你留下任何脸面。</p>
+<p>我拿到了和广州站一样的剧本，但落入了更令人绝望的深渊。</p>
+<p>我在开场17分钟，跟榜通过了两道题目，位列全场第七名！</p>
+<p>但是，随后的第三题，是一道数论题，需要用两次exgcd才能通过。在这个赛季中，我们队所有的数论题都交给队友pengym实现，我甚至已经忘记了exgcd怎么写。</p>
+<p>于是，三小时过去了，我没有做出第三题。</p>
+<p>我又体验了一次，广州站，看着排名一点一点往下掉，周围的人一点一点超过你，但你就是想不出来解法的绝望。我一个人坐在老家的屏幕前，看着题目。</p>
+<p>之后，我强忍着泪水写完了第四题和第五题，但最后的排名距离铜牌还有9名。</p>
+<p>我打铁了。</p>
+<p>比广州站更绝望，从前十名，掉到金牌区，掉到银牌区，掉到铜牌区，最后连铜牌都没有。</p>
+<h3 id="赛季后"><a href="#赛季后" class="headerlink" title="赛季后"></a>赛季后</h3><p>这算是我目前人生中遇到的最大的挫折吧，我第一次在自己喜欢且努力的事物上失败的如此彻底。当然，从某种角度看来，我很幸运，我目前人生中遇到最大的挫折只是在自己热爱的事物上受挫。</p>
+<p>但对于我来说，ACM，我所热爱的算法竞赛，就是我大学生涯中最重要的事物。我感觉我失败了。不止算法竞赛失败了，GPA也爆炸了，上课下课都在参加训练，大二上学期的排名掉到了第18名。我觉得我的算法竞赛生涯到这里就结束了，努力了这么多年的事业，竟以一个如此之凄惨的方式收场。</p>
+<p>杭州站结束后，校队教练之一许老师发微信安慰我：“蜕变的过程，总会很难受。坚持住，就柳暗花明了”。</p>
+<p>在赛季结束的几个月里想了很久。</p>
+<blockquote>
+<p>“绝望的尽头是深爱” —— 《魔女的夜宴》</p>
+</blockquote>
+<p>如果没有深沉的爱意，又怎么会感到绝望的痛苦呢？高中，我选择了退役；而如今到了大学，我不愿重蹈覆辙！</p>
+<p>我不甘心，我要打下去。</p>
+<h2 id="大三"><a href="#大三" class="headerlink" title="大三"></a>大三</h2><p>两位20级的队友退役了，于是我找上了同是21级的前队友 —— lovekdl 与 MakiseChris。</p>
+<p>lovekdl是从高中开始打信息学竞赛的选手。我们在大一下和Liqi同学每天网课都在玩《Apex英雄》，最后三个人一起登上了钻石段位，同时我们还一起取得了北交第一届《Apex英雄》校赛的亚军。</p>
+<p>MakiseChris是零基础选手，进入大学后在半学期内刷了几百道Leetcode题目，直接获得了新生赛第三名。他很厉害，要说的话，我认为他是我们三个人中天赋最高的选手。</p>
+<p>但他们俩都已经在大二时取得了四个银牌，对于他们来说，性价比最高的就是退役做科研，这样才能在保研期间进入清北等顶尖高校。</p>
+<p>我说服了lovekdl和我一起努力，一起训练学算法、一起冲击金牌。而MakiseChris醉心科研，无心训练，但好在他的脑子是真的好用，我和lovekdl最喜欢的就是把算法跟MakiseChris说一遍，然后他就找到了我们算法的漏洞。</p>
+<p>就这样，我们三个人组成了新的队伍 —— 蓝色线段树。</p>
+
+        <a data-fancybox="gallery" href="/2024/06/06/%E8%87%B4%E6%88%91%E7%9A%84%E5%85%AB%E5%B9%B4%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E7%94%9F%E6%B6%AF/image-20240605234056325.png">
+          <img src="/2024/06/06/%E8%87%B4%E6%88%91%E7%9A%84%E5%85%AB%E5%B9%B4%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E7%94%9F%E6%B6%AF/image-20240605234056325.png" />
+        </a>
+        
+
+<blockquote>
+<p>蓝色线段树，从左到右依次为：YXH_XianYu, MakiseChris, QQ Bot, lovekdl</p>
+</blockquote>
+<h3 id="训练"><a href="#训练" class="headerlink" title="训练"></a>训练</h3><p>我不愿重现2022年的惨状，所以我决定将所有时间投入算法竞赛，将其视为最高优先级。对我来说，算法竞赛比保研，甚至比本科毕业的优先级还要高。</p>
+<p>其次，便是整理训练思路：首先，必须先将算法学完，再开始系统参加训练赛。这就好比高考，你必须先系统学习所有知识点，再刷题一样。碎片化的学习对理解一套体系的效率是极低的。这是一个很显而易见的结论，但去年的我们并没有遵守。其次，每场训练赛中能做的题必须要补。不订正，就无法知道队伍的缺陷，下次看到同一道题还是不会。最后，个人能力要足够强，每个人必须打上CodeForces橙名，必须确保代码正确率足够高，面对问题有一套自己成体系的、有逻辑的思考策略。而在团队合作上，没有思路就要换题，同时，在交流题目的时候尽可能不要污染队友的思路，让队友独立地从零思考问题。</p>
+<p>一个多月的暑期集训飞快地就过去了，我感到很高兴，算法竞赛集训的时光总是我人生中最快乐的时光之一。9月份开学后，我仍然遵守着ALL IN算法竞赛的策略：作业能抄就抄，上课能不听就不听，将尽可能多的时间投入算法竞赛。</p>
+<p>“我必须考虑这是否是我此生仅有的机会”，我有两个梦想，第一个是取得ACM金牌，第二个则是开发一款能打动人心的、对人有意义的、对社会有价值的游戏。</p>
+<p>今年如果无法拿到金牌，那我一定会为此遗憾一生。</p>
+<h3 id="第一场区域赛-——-2023-CCPC-秦皇岛"><a href="#第一场区域赛-——-2023-CCPC-秦皇岛" class="headerlink" title="第一场区域赛 —— 2023 CCPC 秦皇岛"></a>第一场区域赛 —— 2023 CCPC 秦皇岛</h3><p>熟悉我的人应该知道，我们在这场比赛中拿到了金牌。</p>
+<p>当时lovekdl向我跑过来说，“我们好像金了”，然后我兴冲冲地跑到舞台后，发现老师手里拿着一个名单，上面是金牌队伍 —— 第18名，蓝色线段树。</p>
+<p>之后发生了什么，印象已经模糊了。我只记得我站在队伍里流泪。我没什么表情或者举动，就是笔直地站在那里，眼泪就是止不住地流下。</p>
+<p>一年前的最后一战，我看着我的排名从前十滑落到几百名，从目标的金牌到与铜牌失之交臂，绝望在那一刻狠狠地扼住了我的喉咙，竞赛的残酷给了我重重一拳，将我打趴在地上。我一个人在老家的电脑前，努力地让泪水不滑出我的眼眶。</p>
+<p>那时，我以为我的算法竞赛生涯已经结束了。</p>
+<p>而我现在，却站在金牌的领奖队伍中。</p>
+<p>一年前，我忍住了我的泪水，而现在，我的泪水止不住地向外滴落。</p>
+<p>我感觉，那是我人生中最美好的时刻。</p>
+<h3 id="第二、三场区域赛-——-2023-ICPC-西安站、南京站"><a href="#第二、三场区域赛-——-2023-ICPC-西安站、南京站" class="headerlink" title="第二、三场区域赛 —— 2023 ICPC 西安站、南京站"></a>第二、三场区域赛 —— 2023 ICPC 西安站、南京站</h3><p>后两场比赛，我们也拿到了金牌，成功取得了“本赛季区域赛全金”的成就。</p>
+<p>我非常幸运地，用三枚金牌给自己的算法竞赛生涯画上了一个完美的句号。</p>
+
+        <a data-fancybox="gallery" href="/2024/06/06/%E8%87%B4%E6%88%91%E7%9A%84%E5%85%AB%E5%B9%B4%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E7%94%9F%E6%B6%AF/pic2.png">
+          <img src="/2024/06/06/%E8%87%B4%E6%88%91%E7%9A%84%E5%85%AB%E5%B9%B4%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E7%94%9F%E6%B6%AF/pic2.png" />
+        </a>
+        
+
+<blockquote>
+<p>蓝色线段树与三个金牌。我穿着“李培楠夺冠纪念T恤”，他是我敬仰的人之一</p>
+</blockquote>
+<h2 id="末"><a href="#末" class="headerlink" title="末"></a>末</h2><p>一路走来，在我身上发生的事，正如许老师鼓励的话一样，也好似游戏中的人物 —— 历经磨难最终蜕变。</p>
+<p>无数个巧合与周围的人绘织成了这么一个故事，我很感谢周围一直帮助我的同学、老师、教练和父母，感谢大家一起编织的这个故事。</p>
+<p>正如某位伟人的话：故事终究是需要服务于人民，改造世界的。幸运女神眷顾了我，而我又从自己的故事中认识了什么呢？</p>
+<p>我觉得，我只是普通人。细数我短暂的初中、高中、本科生活，我大部分的成就，均来自我的兴趣，均来自那些不记成本般投入的时间。ACM区域赛金牌也几乎到达了我能力的极限，没有更长时间的积累和努力，很难取得更高的成就。</p>
+<p>我和许多能考入清北华五的大佬们不同：我既没有那超乎常人的智慧；也难以静下心来学习我不感兴趣的知识。我只是普通人，会不小心看b站和知乎看到四五点、缺乏自制力的芸芸众生。我断断续续背了五六次英语单词，全都无疾而终，最近的一次甚至只坚持了三天。对于我来说，不努力就不会有结果，算法竞赛是这样，GPA是这样，其他事情也是这样。</p>
+<p>但我热爱，我愿意在自己热爱的事物上花时间，我愿意不断地追逐我的目标，我也愿意把自己的人生交给我热爱的事物。</p>
+<p>我一直认为，我如今获得到周围人认可的原因，只是社会的需求碰巧和我的喜好重合罢了。如果我出生在一个不需要算法、不需要图形学、没有任何娱乐的世界，那么我的故事或许也将不复存在。社会在变化，又或许，在未来的某一天，周围人的认可便会离我而去。</p>
+<p>但至少在当下，在这个宇宙，在这个充满了电子游戏与计算机的世界中，我希望，我能用我的热爱与付出来回报我的喜好，回报社会的需求，尽可能地为我热爱的事物做贡献，最后，也为这个美好的世界献上祝福。</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">首页</a></li>
+        
+          <li><a href="/about/">关于我</a></li>
+        
+          <li><a href="/archives/">所有文章</a></li>
+        
+          <li><a href="/tags/">所有标签</a></li>
+        
+          <li><a href="/friends/">友情链接</a></li>
+        
+          <li><a href="/search/">站内搜索</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9D%E4%B8%80-%E5%88%9D%E4%BA%8C"><span class="toc-number">2.</span> <span class="toc-text">初一&amp;初二</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9D%E4%B8%89"><span class="toc-number">3.</span> <span class="toc-text">初三</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%AB%98%E4%B8%80-%E9%AB%98%E4%BA%8C"><span class="toc-number">4.</span> <span class="toc-text">高一&amp;高二</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%AB%98%E4%B8%89"><span class="toc-number">5.</span> <span class="toc-text">高三</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%A7%E4%B8%80"><span class="toc-number">6.</span> <span class="toc-text">大一</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%A7%E4%BA%8C"><span class="toc-number">7.</span> <span class="toc-text">大二</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E5%9C%BA%E5%8C%BA%E5%9F%9F%E8%B5%9B-%E2%80%94%E2%80%94-2022-CCPC-%E5%A8%81%E6%B5%B7"><span class="toc-number">7.1.</span> <span class="toc-text">第一场区域赛 —— 2022 CCPC 威海</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E5%9C%BA%E5%8C%BA%E5%9F%9F%E8%B5%9B-%E2%80%94%E2%80%94-2022-CCPC-%E5%B9%BF%E5%B7%9E"><span class="toc-number">7.2.</span> <span class="toc-text">第二场区域赛 —— 2022 CCPC 广州</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E5%9C%BA%E5%8C%BA%E5%9F%9F%E8%B5%9B-%E2%80%94%E2%80%94-2022-ICPC-%E5%90%88%E8%82%A5"><span class="toc-number">7.3.</span> <span class="toc-text">第三场区域赛 —— 2022 ICPC 合肥</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E5%9C%BA%E5%8C%BA%E5%9F%9F%E8%B5%9B-%E2%80%94%E2%80%94-2022-ICPC-%E6%9D%AD%E5%B7%9E"><span class="toc-number">7.4.</span> <span class="toc-text">第四场区域赛 —— 2022 ICPC 杭州</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B5%9B%E5%AD%A3%E5%90%8E"><span class="toc-number">7.5.</span> <span class="toc-text">赛季后</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%A7%E4%B8%89"><span class="toc-number">8.</span> <span class="toc-text">大三</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%AD%E7%BB%83"><span class="toc-number">8.1.</span> <span class="toc-text">训练</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E5%9C%BA%E5%8C%BA%E5%9F%9F%E8%B5%9B-%E2%80%94%E2%80%94-2023-CCPC-%E7%A7%A6%E7%9A%87%E5%B2%9B"><span class="toc-number">8.2.</span> <span class="toc-text">第一场区域赛 —— 2023 CCPC 秦皇岛</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E3%80%81%E4%B8%89%E5%9C%BA%E5%8C%BA%E5%9F%9F%E8%B5%9B-%E2%80%94%E2%80%94-2023-ICPC-%E8%A5%BF%E5%AE%89%E7%AB%99%E3%80%81%E5%8D%97%E4%BA%AC%E7%AB%99"><span class="toc-number">8.3.</span> <span class="toc-text">第二、三场区域赛 —— 2023 ICPC 西安站、南京站</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AB"><span class="toc-number">9.</span> <span class="toc-text">末</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://yxhxianyu.fun/2024/06/06/%E8%87%B4%E6%88%91%E7%9A%84%E5%85%AB%E5%B9%B4%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E7%94%9F%E6%B6%AF/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://yxhxianyu.fun/2024/06/06/%E8%87%B4%E6%88%91%E7%9A%84%E5%85%AB%E5%B9%B4%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E7%94%9F%E6%B6%AF/&text=致我的八年算法竞赛生涯"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://yxhxianyu.fun/2024/06/06/%E8%87%B4%E6%88%91%E7%9A%84%E5%85%AB%E5%B9%B4%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E7%94%9F%E6%B6%AF/&title=致我的八年算法竞赛生涯"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yxhxianyu.fun/2024/06/06/%E8%87%B4%E6%88%91%E7%9A%84%E5%85%AB%E5%B9%B4%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E7%94%9F%E6%B6%AF/&is_video=false&description=致我的八年算法竞赛生涯"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=致我的八年算法竞赛生涯&body=Check out this article: http://yxhxianyu.fun/2024/06/06/%E8%87%B4%E6%88%91%E7%9A%84%E5%85%AB%E5%B9%B4%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E7%94%9F%E6%B6%AF/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://yxhxianyu.fun/2024/06/06/%E8%87%B4%E6%88%91%E7%9A%84%E5%85%AB%E5%B9%B4%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E7%94%9F%E6%B6%AF/&title=致我的八年算法竞赛生涯"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://yxhxianyu.fun/2024/06/06/%E8%87%B4%E6%88%91%E7%9A%84%E5%85%AB%E5%B9%B4%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E7%94%9F%E6%B6%AF/&title=致我的八年算法竞赛生涯"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://yxhxianyu.fun/2024/06/06/%E8%87%B4%E6%88%91%E7%9A%84%E5%85%AB%E5%B9%B4%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E7%94%9F%E6%B6%AF/&title=致我的八年算法竞赛生涯"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://yxhxianyu.fun/2024/06/06/%E8%87%B4%E6%88%91%E7%9A%84%E5%85%AB%E5%B9%B4%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E7%94%9F%E6%B6%AF/&title=致我的八年算法竞赛生涯"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://yxhxianyu.fun/2024/06/06/%E8%87%B4%E6%88%91%E7%9A%84%E5%85%AB%E5%B9%B4%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E7%94%9F%E6%B6%AF/&name=致我的八年算法竞赛生涯&description=&lt;h2 id=&#34;前言&#34;&gt;&lt;a href=&#34;#前言&#34; class=&#34;headerlink&#34; title=&#34;前言&#34;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;紧张刺激的保研生活以一种意外且迅速的方式落下帷幕，我很幸运地成为那少数能在六月初便确定去向的人。无论如何，现在终于有时间来完成那些令我心心念念的事情了。&lt;/p&gt;
+&lt;p&gt;所以，让我们来聊聊算法竞赛吧 —— 这个陪我度过八年人生的事业。&lt;/p&gt;
+&lt;p&gt;算法竞赛给我带来了开阔的视野、扎实的代码基础、深交的挚友们，让我认识到了我和大佬们的差距，让我深刻地懂得了自己的优势，也让我深入地思考了自己人生的意义。&lt;/p&gt;
+&lt;p&gt;谨以此文，告别我的八年算法竞赛生涯，告别我那学生时代中最为热爱的事业吧！&lt;/p&gt;
+&lt;h2 id=&#34;初一-初二&#34;&gt;&lt;a href=&#34;#初一-初二&#34; class=&#34;headerlink&#34; title=&#34;初一&amp;amp;初二&#34;&gt;&lt;/a&gt;初一&amp;amp;初二&lt;/h2&gt;&lt;p&gt;那是2015年秋季，刚刚踏入福州第十九中学的我，在某次午休的时候，发现了学校的机房，也透过门扉发现了上课的学长学姐。我觉得他们很厉害。这大概是我遇见信息学（即算法竞赛）的第一眼。&lt;/p&gt;
+&lt;p&gt;随后，在一次机缘巧合之下，我参加了学校举办的信息学讲座。当时，王老师在台上讲着“斐波那契数列”，而我在台下想着什么呢？难道是一位天才少年立刻听懂了斐波那契数列的求解思路？不对！刚刚被父亲推荐《DOOM启示录》并读完这本书的我，深受约翰卡马克的鼓舞，在台下想的只有：“哇，是编程！学习编程是不是就可以做游戏了，好，我要学习编程做游戏”。&lt;/p&gt;
+&lt;p&gt;于是，我就报名了福州三中的信息学寒假入门班。我记得，寒假第一天上课时，机房座无虚席，乌泱泱的一片全是人，少说也有一百多位。但第二节课，人就少了快一半。到第二轮进阶班时，只剩下了不到二十位同学，坚持下来的同学非常少。后来，我和其中大约一半的同学都成为了要好的朋友，成为了八年之后仍在每天水群聊天的好伙伴。在我写下这段句子的前一天，DWTornier和Terry还向我安利《超自然车旅》这个游戏，他们成功了。&lt;/p&gt;
+&lt;p&gt;又过了一两个月，我加入了十九中的信息学社团，成为了一周两次在午休时跑到机房写代码听课的网瘾少年。王老师当时布置了许多题目，不知不觉就全部做完了。当时将题目全部做完的同学，印象中只有我和蓝猫。&lt;/p&gt;"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://yxhxianyu.fun/2024/06/06/%E8%87%B4%E6%88%91%E7%9A%84%E5%85%AB%E5%B9%B4%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E7%94%9F%E6%B6%AF/&t=致我的八年算法竞赛生涯"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2021-2025
+    YXHXianYu
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于我</a></li><!--
+     --><!--
+       --><li><a href="/archives/">所有文章</a></li><!--
+     --><!--
+       --><li><a href="/tags/">所有标签</a></li><!--
+     --><!--
+       --><li><a href="/friends/">友情链接</a></li><!--
+     --><!--
+       --><li><a href="/search/">站内搜索</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+  <!-- fancybox -->
+  
+    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
+    <script>
+      Fancybox.bind('[data-fancybox="gallery"]', {
+        //
+      });    
+    </script>
+  
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
